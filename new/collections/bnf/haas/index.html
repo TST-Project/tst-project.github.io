@@ -2,7 +2,7 @@
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
       <meta charset="utf-8">
       
-      <title>Texts Surrounding Texts: Collections</title>
+      <title>Texts Surrounding Texts: BnF Haas collection</title>
       
       <link rel="icon" type="image/png" href="https://tst-project.github.io/lib/img/favicon-32.png">
       <link rel="stylesheet" href="https://tst-project.github.io/lib/css/tufte.css">
@@ -10,9 +10,14 @@
       <link rel="stylesheet" href="https://tst-project.github.io/lib/css/header.css">
       <link rel="stylesheet" href="https://tst-project.github.io/lib/css/transcription.css">
       
+      
 
-      <!--script type="module" src="/index.mjs"></script-->
-     <link rel="stylesheet" href="../assets/index-c851e77f.css">
+      
+      
+     <script type="module" crossorigin src="../../../assets/index-3b9b31f5.js"></script>
+     <script type="module" crossorigin src="../../../assets/network-3efb292e.js"></script>
+     <link rel="stylesheet" href="../../../assets/jquery-038d5b96.css">
+     <link rel="stylesheet" href="../../../assets/index-c851e77f.css">
    </head>
    <body lang="en">
     <article>
@@ -73,45 +78,32 @@
         </nav>
         <header>
             <div class="wide">
-            <h1>Collections</h1>
-            <p class="intro">Apart from the BnF and the SUB, a number of digitized manuscripts from archives around the world, which may have been miscatalogued, have been given detailed descriptions.</p>
+            <h1>BnF Haas collection</h1>
+            <div class="sidebyside">
+                <img src="haas.png" style="width: 250px" title="Récépissé de brevet, légion d'honneur, Base de données Léonore">
+                <p class="intro">Frédéric Haas (1843–1915) was a French diplomat, posted to India, Burma, and China, who was honoured as an <a href="https://www.leonore.archives-nationales.culture.gouv.fr/ui/notice/179340" lang="fr">officier de la légion d'honneur.</a> Very little is known about his manuscript collection, apart from the note, <q lang="fr">Don Haas</q> in the <a href="https://gallica.bnf.fr/ark:/12148/btv1b105375868">catalogue of Julien Vinson &amp; Léon Feer</a>.</p>
+            </div>
             </div>
         </header>
-        <section class="showcase">
-            <div>
-                <img src="all.jpg" title="Bnu Strasbourg MS.4.687, 1v-2r" width="100%">
-                <a href="all/">
-                <h1>All manuscripts</h1>
-                <p></p>
-                </a>
+        <section>
+            <nav id="tabright">
+                <div id="listview" class="selected">List view</div>
+                <div id="networkview">Network view</div>
+            </nav>
+            <div id="spinner">
+                <div></div>
             </div>
-        </section>
-        <section class="showcase">
-            <div>
-                <img src="bnf.jpg" title="BnF Indien 210, Ar">
-                <a href="bnf/">
-                <h1>BnF manuscripts</h1>
-                <p>The Bibliothèque nationale de France holds the largest collection of Tamil manuscripts outside India. It is comprised of manuscripts acquired over the course of many centuries by different collectors.</p>
-                </a>
-            </div>
-        </section>
-        <section class="showcase">
-            <div>
-                <img src="sub.jpg" title="SUB Cod. Palmbl. 102, 110r">
-                <a href="sub/">
-                <h1>SUB manuscripts</h1>
-                <p>The Staats- und Universitätsbibliothek Hamburg holds more than 500 Indian manuscripts, mostly in Sanskrit, and hailing from South India.</p>
-                </a>
-            </div>
+            <table id="index" data-collector="Haas, Frédéric (1843-1915)" data-sqlcolumns="old_shelfmarks(Haas), shelfmark, title, languages, material, extent, date, images"></table>
+            <div id="network" data-person="Haas, Frédéric (1843-1915)"></div>
         </section>
         <footer>
             <div>
-            <a href="https://anr.fr/"><img src="../logos/anr.png" title="Agence nationale de la recherche"></a> 
-            <a href="https://www.dfg.de/"><img src="../logos/dfg.png" title="Deutsche Forschungsgemeinschaft"></a> 
-            <a href="https://bnf.fr/"><img src="../logos/bnf.png" title="Bibliothèque nationale de France"></a> 
-            <a href="https://www.sub.uni-hamburg.de/"><img src="../logos/stabi.png" title="Staats- und Universitätsbibliothek Hamburg"></a>
-            <a href="https://cnrs.fr/"><img src="../logos/cnrs.png" title="Centre nationale de la recherche scientifique"></a>
-            <a href="https://www.uni-hamburg.de/"><img src="../logos/hamburg.png" title="Universität Hamburg"></a> 
+            <a href="https://anr.fr/"><img src="../../../logos/anr.png" title="Agence nationale de la recherche"></a> 
+            <a href="https://www.dfg.de/"><img src="../../../logos/dfg.png" title="Deutsche Forschungsgemeinschaft"></a> 
+            <a href="https://bnf.fr/"><img src="../../../logos/bnf.png" title="Bibliothèque nationale de France"></a> 
+            <a href="https://www.sub.uni-hamburg.de/"><img src="../../../logos/stabi.png" title="Staats- und Universitätsbibliothek Hamburg"></a>
+            <a href="https://cnrs.fr/"><img src="../../../logos/cnrs.png" title="Centre nationale de la recherche scientifique"></a>
+            <a href="https://www.uni-hamburg.de/"><img src="../../../logos/hamburg.png" title="Universität Hamburg"></a> 
             </div>
             <div>
                 <p style="width: 50%; margin: 0"><em>Texts Surrounding Texts: Satellite stanzas, prefaces, &amp; colophons in South Indian manuscripts (BnF &amp; Hamburg Stabi collections)</em> was funded through a Franco-German collaboration in the Humanities and Social Sciences grant (<a href="https://anr.fr/Projet-ANR-18-FRAL-0002">FRAL 2018, ANR/DFG</a>) from 2019–2023.</p>
@@ -135,6 +127,7 @@
         </footer>
     </article>
    
+
 
 
 
