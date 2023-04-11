@@ -2,7 +2,7 @@
       <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
       <meta charset="utf-8">
       
-      <title>Texts Surrounding Texts: BnF manuscripts</title>
+      <title>Texts Surrounding Texts: Ownership statements</title>
       
       <link rel="icon" type="image/png" href="https://tst-project.github.io/lib/img/favicon-32.png">
       <link rel="stylesheet" href="https://tst-project.github.io/lib/css/tufte.css">
@@ -76,10 +76,10 @@
         </nav>
         <header>
             <div class="wide">
-            <h1>BnF manuscripts</h1>
+            <h1>Ownership statements</h1>
             <div class="sidebyside">
-                <img src="bnf.png" style="width: 200px">
-                <p>At the <span lang="fr">Bibliothèque nationale de France,</span> the majority of the Indian manuscripts can be found under the <em>Indien</em> and <em>Sanscrit</em> shelfmarks. However, there are a number of Indian materials in other collections, such as the <em lang="fr">Nouvelles acquisitions françaises</em> (NAF) and <em>Smith-Lesouëf</em>. For information on individual collectors and collections, see the <q>Collections</q> menu.</p>
+                <img src="ownership-statements.png" style="width: 250px" title="BnF indien 757, title page">
+                <p>A statement of ownership may be expressed as part of a colophon, at the end of the manuscript, on the cover, or on an ex-libris or library stamp.</p>
             </div>
             </div>
         </header>
@@ -87,7 +87,7 @@
             <div id="spinner">
                 <div></div>
             </div>
-            <table id="index" data-repository="BnF" data-sqlcolumns="shelfmark, title, languages, material, extent, date, images"></table>
+            <table id="index" data-paratext="ownership-statements" data-sqlcolumns="ownership-statement, shelfmark, repository, title, date, synch, milestone, placement"></table>
         </section>
         <footer>
             <div>
@@ -120,6 +120,8 @@
         </footer>
     </article>
    
+
+
 
 
 </body></html>
