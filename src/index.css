@@ -47,6 +47,11 @@ header {
     flex-direction: column;
 }
 
+.wide h1 {
+    hyphens: none;
+    text-align: center;
+}
+
 .sidebyside {
     display: flex;
     justify-content: space-between;
@@ -518,6 +523,7 @@ blockquote footer {
         display: block;
         text-align: right;
         margin-right: 1rem;
+        font-size: 2rem;
     }
     #menutoggle:checked ~ .dropper {
         display: block;
@@ -537,5 +543,8 @@ blockquote footer {
     }
     .sidebyside {
         flex-direction: column;
+    }
+    .sidebyside p {
+        width: 100%;
     }
 }
