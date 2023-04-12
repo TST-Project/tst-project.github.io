@@ -1,9 +1,9 @@
-name: build and deploy
+ame: build and deploy
 on:
   push:
   workflow_dispatch:
 jobs:
-  update-db:
+  build-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -13,13 +13,21 @@ jobs:
           all_but_latest: true
           access_token: ${{ github.token }}
 
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
 
-      - run: |
+      - name: build
+        run: |
           cd src
           yarn install
           yarn build
+      - name: deploy
+        run: |
+          cd src
           git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
           yarn deploy -- -u "github-actions-bot <support+action@github.com>"
