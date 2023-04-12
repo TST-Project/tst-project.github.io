@@ -180,7 +180,7 @@ const drawNetwork = async () => {
             e.target.addClass('clicked');
     };
 
-    cy.on('mouseup',mouseUp.bind(null,cy));
+    cy.on('tapend',mouseUp.bind(null,cy));
 };
 
 document.getElementById('tabright').addEventListener('click',(e) => {
