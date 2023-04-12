@@ -1,4 +1,4 @@
-ame: build and deploy
+name: build and deploy
 on:
   push:
   workflow_dispatch:
