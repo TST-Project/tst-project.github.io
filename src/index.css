@@ -261,7 +261,7 @@ a[href]:hover::after {
     text-decoration: none;
 }
 
-#menu a[href]:hover, a[href]:hover h1, footer a[href]:hover {
+#menu a[href]:hover, #menu a[href]:active, a[href]:hover h1, a[href]:active h1, footer a[href]:hover, footer a[href]:active {
     color: rgba(198,210,241,1);
     text-shadow: 2px 2px 2px black;
 }
@@ -297,6 +297,9 @@ footer a[href] {
     line-height: 0.8rem;
 }
 
+#menu > div.homebutton {
+    display: none;
+}
 #menu > div {
     margin-right: 5rem;
     padding: 0.5rem 1.5rem 0.5rem 1.5rem;
@@ -525,8 +528,13 @@ blockquote footer {
         margin-right: 1rem;
         font-size: 2rem;
     }
-    #menutoggle:checked ~ .dropper {
+
+    #menutoggle:checked ~ div:not(.logo) {
         display: block;
+    }
+    #menutoggle:checked ~ #togglelabel {
+        color: rgba(198,210,241,1);
+        text-shadow: 2px 2px 2px black;
     }
     .dropped {
         position: relative;
@@ -535,7 +543,15 @@ blockquote footer {
         box-shadow: none;
         display: block;
     }
+    .wide p {
+        font-size: 1.3rem;
+        line-height: 2.2rem;
+    }
+    #index {
+        font-size: 1.2rem;
+    }
 }
+
 @media (max-width: 688px) {
     .showcase > div > :not(img) {
         flex-direction: column;
@@ -546,5 +562,9 @@ blockquote footer {
     }
     .sidebyside p {
         width: 100%;
+    }
+
+    .wide h1 {
+        font-size: 2.8rem;
     }
 }
