@@ -581,4 +581,21 @@ blockquote footer {
     .wide h1 {
         font-size: 2.8rem;
     }
+    .showcase h1 {
+        font-size: 2.5rem;
+    }
+    .showcase p, #fundingblurb {
+        font-size: 1.3rem;
+        line-height: 1.8rem;
+    }
+    .wide p {
+        width: 85%;
+    }
+    blockquote {
+        width: 75%;
+    }
+    .wide blockquote p {
+        font-size: 1.1rem;
+        line-height: 1.8rem;
+    }
 }
