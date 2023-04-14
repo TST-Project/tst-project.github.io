@@ -1,7 +1,6 @@
 import DataTable from 'datatables.net';
 import 'datatables.net-responsive';
 import 'datatables.net-fixedheader';
-//import 'datatables.net-responsive-dt';
 import './lib/customsort.mjs';
 import createSqlWorker from './lib/sqlWorker.mjs';
 import {toolTipMouseover} from './lib/toolTip.mjs';
