@@ -8,7 +8,7 @@ import {hyphenateHTMLString} from './lib/hyphenate.mjs';
 
 const allcolumns = new Map([
     ['shelfmark', {title: 'shelfmark', type: 'shelfmark', sql: 'mss.filename, shelfmark', 
-                  post: (res) => `<a href="https://tst-project.github.io/mss/${res.filename}" class="shelfmark">${res.shelfmark}</a>`}],
+                  post: (res) => `<a href="/mss/${res.filename}" class="shelfmark">${res.shelfmark}</a>`}],
     ['repository', {sql: 'repository', title: 'repository'}],
     ['title', {sql: 'title', title: 'title', type: 'tamil', post: (res) => hyphenateHTMLString(res.title)}],
     ['languages', {sql: 'languages', title: 'languages'}],
@@ -32,7 +32,7 @@ const allcolumns = new Map([
     ['g_below-base', {sql: '[g_below-base].context AS [g_below-base], [g_below-base].text as [g_below-base_sort]', title: 'ligature', table: '[g_below-base]', type: 'tamil', render: {_: 'display', sort: 'sort'}, post: (res) => {return {display: hyphenateHTMLString(res['g_below-base']), sort: res['g_below-base_sort']};}}],
     ['g_post-base', {sql: '[g_post-base].context AS [g_post-base], [g_post-base].text as [g_post-base_sort]', title: 'ligature', table: '[g_post-base]', type: 'tamil', render: {_: 'display', sort: 'sort'}, post: (res) => {return {display: hyphenateHTMLString(res['g_post-base']), sort: res['g_post-base_sort']};}}],
     ['synch', {sql: 'synch', title: 'unit'}],
-    ['milestone', {sql: 'milestone, facs', title: 'page/folio', post: (res) => res.milestone && res.facs ? `<a href="https://tst-project.github.io/mss/${res.filename}?facs=${res.facs}">${res.milestone}</a>` : res.milestone}],
+    ['milestone', {sql: 'milestone, facs', title: 'page/folio', post: (res) => res.milestone && res.facs ? `<a href="/mss/${res.filename}?facs=${res.facs}">${res.milestone}</a>` : res.milestone}],
     ['placement', {sql: 'placement', title: 'placement'}],
 ]);
 
