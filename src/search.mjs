@@ -59,6 +59,7 @@ const ftssearch = async (query) => {
             [25, 50, 100, 'All']
           ],
           sortable: true,
+          scrollX: true,
           data: data,
           columns: [
           { title: 'shelfmark', type: 'shelfmark' },

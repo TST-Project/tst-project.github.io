@@ -1,5 +1,5 @@
 import DataTable from 'datatables.net';
-import 'datatables.net-responsive';
+//import 'datatables.net-responsive';
 //import 'datatables.net-fixedheader';
 import './lib/customsort.mjs';
 import createSqlWorker from './lib/sqlWorker.mjs';
@@ -128,7 +128,8 @@ window.addEventListener('load', async () => {
           sortable: true,
           data: data.rows,
           columns: data.columns,
-          responsive: true,
+          //responsive: true,
+          scrollX: true
           //fixedHeader: true
 
   });
