@@ -419,6 +419,9 @@ span.invisinote::after {
     .dataTable-container {
         overflow-x: auto;
     }
+    #menu > div {
+        padding-right: 0;
+    }
 }
 
 span.gaiji-context {
@@ -477,6 +480,13 @@ blockquote {
 }
 blockquote footer {
     width: 100%;
+}
+
+#ftsinput {
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    width: 90ch;
+    border-radius: 3px;
 }
 
 @media (max-width: 1080px) {
@@ -561,7 +571,7 @@ blockquote footer {
         font-size: 1.3rem;
         line-height: 2.2rem;
     }
-    #index {
+    table, #index {
         font-size: 1.2rem;
     }
 }

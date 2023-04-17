@@ -1,17 +1,10 @@
 import DataTable from 'datatables.net';
 import 'datatables.net-responsive';
-import 'datatables.net-fixedheader';
+//import 'datatables.net-fixedheader';
 import './lib/customsort.mjs';
 import createSqlWorker from './lib/sqlWorker.mjs';
 import {toolTipMouseover} from './lib/toolTip.mjs';
-import Hypher from 'hypher';
-import {hyphenation_ta_Latn} from './lib/ta-Latn.mjs';
-import {hyphenation_sa} from './lib/sa.mjs';
-
-const hyphenator = {
-    ta: new Hypher(hyphenation_ta_Latn),
-    sa: new Hypher(hyphenation_sa)
-};
+import {hyphenateHTMLString} from './lib/hyphenate.mjs';
 
 const allcolumns = new Map([
     ['shelfmark', {title: 'shelfmark', type: 'shelfmark', sql: 'mss.filename, shelfmark', 
@@ -47,24 +40,6 @@ const allcolumns = new Map([
     for(const shelfmark of old_shelfmarks)
         allcolumns.set(`old_shelfmarks(${shelfmark})`, {title: 'old shelfmark', type: 'shelfmark', sql: `json_extract(old_shelfmarks, '$.${shelfmark}') AS 'old_shelfmarks(${shelfmark})'`});
 
-const hyphenate = (el) => {
-    const walker = document.createTreeWalker(el,NodeFilter.SHOW_TEXT);
-    let curnode = walker.nextNode();
-    while(curnode) {
-        if(curnode.parentNode.lang.startsWith('ta'))
-            curnode.data = hyphenator.ta.hyphenateText(curnode.data);
-        else if(curnode.parentNode.lang.startsWith('sa'))
-            curnode.data = hyphenator.sa.hyphenateText(curnode.data);
-        curnode = walker.nextNode();
-    }
-};
-
-const hyphenateHTMLString = (str) => {
-    const container = document.createElement('div');
-    container.innerHTML = str;
-    hyphenate(container);
-    return container.innerHTML;
-};
 
 const getData = async (table) => {
     

@@ -3,7 +3,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta charset="utf-8">
       
-      <title>Texts Surrounding Texts: BnF Ariel collection</title>
+      <title>Texts Surrounding Texts: Search</title>
       
       <link rel="icon" type="image/png" href="https://tst-project.github.io/lib/img/favicon-32.png">
       <link rel="stylesheet" href="https://tst-project.github.io/lib/css/tufte.css">
@@ -13,8 +13,7 @@
       <link rel="stylesheet" href="/node_modules/datatables.net-dt/css/jquery.dataTables.css">
       <link rel="stylesheet" href="/index.css">
 
-      <script type="module" src="/index.mjs"></script>
-      <script type="module" src="/network.mjs"></script>
+      <script type="module" src="/search.mjs"></script>
    </head>
    <body lang="en">
     <article>
@@ -77,26 +76,13 @@
             <div><a href="https://tst.hypotheses.org/">Blog</a></div>
             <div><a href="/search/">Search</a></div>
         </nav>
-        <header>
-            <div class="wide">
-            <h1>BnF Ariel collection</h1>
-            <div class="sidebyside">
-                <img src="ariel.png" style="width: 250px" title="BnF Indien 57, 4v">
-                <p class="intro">Édouard-Simon Ariel (1818–1854) was a colonial administrator who was posted to Pondicherry in 1844. His unique collection of manuscripts was bequeathed to the <span lang="fr">Société asiatique</span> in Paris after his death, and it was later transferred to the <span lang="fr">Bibliothèque nationale</span>. For more information on Ariel and his manuscript collection, see <a href="https://heritage.bnf.fr/france-southasia/en/ariel-article">Francis &amp; Trento 2022</a>.</p>
-            </div>
-            </div>
-        </header>
-        <section>
-            <nav id="tabright">
-                <div id="listview" class="selected">List view</div>
-                <div id="networkview">Network view</div>
-            </nav>
-            <div id="spinner">
-                <div></div>
-            </div>
-            <table id="index" data-collector="Ariel, Édouard" data-sqlcolumns="old_shelfmarks(Ariel), old_shelfmarks(w/d), shelfmark, title, languages, material, extent, date, images"></table>
-            <div id="network" data-person="Ariel, Édouard"></div>
-        </section>
+        <div class="wide">
+            <h1>Search manuscripts</h1>
+            <div style="padding-top: 2rem"><input type="text" id="ftsinput" placeholder="search in Tamil script, Devanāgarī script, or IAST/Madras lexicon transliteration"></div>
+            <div id="spinner" style="display: none"><div></div></div>
+            <p id="noresult" style="visibility: hidden;width: auto">No results found for <em id="noresulttext"></em>.</p>
+        </div>
+        <table id="index"></table>
         <footer>
             <div>
             <a href="https://anr.fr/"><img src="/logos/anr.png" title="Agence nationale de la recherche"></a> 
@@ -128,6 +114,8 @@
         </footer>
     </article>
    
+
+
 
 
 
