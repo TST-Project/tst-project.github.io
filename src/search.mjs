@@ -85,13 +85,15 @@ document.getElementById('ftsbutton').addEventListener('click', e => {
 });
 
 const getquery = e => {
+    const inputbox = document.getElementById('ftsinput');
     const urlParams = new URLSearchParams(window.location.search);
     const query = urlParams.get('q');
     if(query) {
-        document.getElementById('ftsinput').value = query;
+        inputbox.value = query;
         ftssearch(query);
     }
+    inputbox.style.visibility = 'visible';
 };
 
-window.addEventListener('load', getquery);
+window.addEventListener('DOMContentLoaded', getquery);
 

@@ -495,6 +495,7 @@ blockquote footer {
     width: 90ch;
     max-width: 98vw;
     border-radius: 3px;
+    visibility: hidden;
 }
 
 @media (max-width: 1080px) {
