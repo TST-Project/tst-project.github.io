@@ -68,17 +68,20 @@ const ftssearch = async (query) => {
 
   });
 };
-
+const newPage = (val) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set('q',val);
+    window.location.search = urlParams;
+};
 document.getElementById('ftsinput').addEventListener('keyup', e => {
     if(event.keyCode !== 13)  return;
 
     const val = e.target.value.trim();
-    if(val === '') return;
-
-    const urlParams = new URLSearchParams(window.location.search);
-    urlParams.set('q',val);
-    window.location.search = urlParams;
-
+    if(val !== '') newPage(val);
+});
+document.getElementById('ftsbutton').addEventListener('click', e => {
+    const val = document.getElementById('ftsinput').value.trim();
+    if(val !== '') newPage(val);
 });
 
 const getquery = e => {
