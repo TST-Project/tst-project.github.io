@@ -36,6 +36,8 @@ export default defineConfig({
                 belowbaseligatures: resolve(__dirname, 'palaeography/below-base-ligatures/index.html'),
                 postbaseligatures: resolve(__dirname, 'palaeography/post-base-ligatures/index.html'),
                 tools: resolve(__dirname, 'tools/index.html'),
+
+                search: resolve(__dirname, 'search/index.html'),
             },
         },
     },
