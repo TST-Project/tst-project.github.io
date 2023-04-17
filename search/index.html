@@ -3,7 +3,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <meta charset="utf-8">
       
-      <title>Texts Surrounding Texts: Post-base ligatures</title>
+      <title>Texts Surrounding Texts: Search</title>
       
       <link rel="icon" type="image/png" href="https://tst-project.github.io/lib/img/favicon-32.png">
       <link rel="stylesheet" href="https://tst-project.github.io/lib/css/tufte.css">
@@ -14,10 +14,10 @@
       
 
       
-     <script type="module" crossorigin src="../../assets/hyphenate-21a7b665.js"></script>
-     <script type="module" crossorigin src="../../assets/index-5ecd8aab.js"></script>
-     <link rel="stylesheet" href="../../assets/jquery-038d5b96.css">
-     <link rel="stylesheet" href="../../assets/index-1699ec01.css">
+     <script type="module" crossorigin src="../assets/search-8e7c6e84.js"></script>
+     <link rel="modulepreload" crossorigin href="../assets/hyphenate-21a7b665.js">
+     <link rel="stylesheet" href="../assets/jquery-038d5b96.css">
+     <link rel="stylesheet" href="../assets/index-1699ec01.css">
    </head>
    <body lang="en">
     <article>
@@ -80,29 +80,21 @@
             <div><a href="https://tst.hypotheses.org/">Blog</a></div>
             <div><a href="/search/">Search</a></div>
         </nav>
-        <header>
-            <div class="wide">
-            <h1>Post-base ligatures</h1>
-            <div class="sidebyside">
-		    <img src="post-base-ligatures.png" style="width: 200px" title="BnF Indien 743, 1r, 'kku'">
-		    <p>Post-base ligatures in Tamil, often geminated consonants, like <q>kka</q> and <q>tta</q>, are found in both manuscripts and inscriptions.</p>
-            </div>
-            </div>
-        </header>
-        <section>
-            <div id="spinner">
-                <div></div>
-            </div>
-            <table id="index" data-sqlcolumns="g_post-base, shelfmark, title, synch, milestone, placement"></table>
-        </section>
+        <div class="wide">
+            <h1>Search manuscripts</h1>
+            <div style="padding-top: 2rem"><input type="text" id="ftsinput" placeholder="search in Tamil script, Devanāgarī script, or IAST/Madras lexicon transliteration"></div>
+            <div id="spinner" style="display: none"><div></div></div>
+            <p id="noresult" style="visibility: hidden;width: auto">No results found for <em id="noresulttext"></em>.</p>
+        </div>
+        <table id="index"></table>
         <footer>
             <div>
-            <a href="https://anr.fr/"><img src="../../logos/anr.png" title="Agence nationale de la recherche"></a> 
-            <a href="https://www.dfg.de/"><img src="../../logos/dfg.png" title="Deutsche Forschungsgemeinschaft"></a> 
-            <a href="https://bnf.fr/"><img src="../../logos/bnf.png" title="Bibliothèque nationale de France"></a> 
-            <a href="https://www.sub.uni-hamburg.de/"><img src="../../logos/stabi.png" title="Staats- und Universitätsbibliothek Hamburg"></a>
-            <a href="https://cnrs.fr/"><img src="../../logos/cnrs.png" title="Centre nationale de la recherche scientifique"></a>
-            <a href="https://www.uni-hamburg.de/"><img src="../../logos/hamburg.png" title="Universität Hamburg"></a> 
+            <a href="https://anr.fr/"><img src="../logos/anr.png" title="Agence nationale de la recherche"></a> 
+            <a href="https://www.dfg.de/"><img src="../logos/dfg.png" title="Deutsche Forschungsgemeinschaft"></a> 
+            <a href="https://bnf.fr/"><img src="../logos/bnf.png" title="Bibliothèque nationale de France"></a> 
+            <a href="https://www.sub.uni-hamburg.de/"><img src="../logos/stabi.png" title="Staats- und Universitätsbibliothek Hamburg"></a>
+            <a href="https://cnrs.fr/"><img src="../logos/cnrs.png" title="Centre nationale de la recherche scientifique"></a>
+            <a href="https://www.uni-hamburg.de/"><img src="../logos/hamburg.png" title="Universität Hamburg"></a> 
             </div>
             <div>
                 <p id="fundingblurb"><em>Texts Surrounding Texts: Satellite stanzas, prefaces, &amp; colophons in South Indian manuscripts (BnF &amp; Hamburg Stabi collections)</em> was funded through a Franco-German collaboration in the Humanities and Social Sciences grant (<a href="https://anr.fr/Projet-ANR-18-FRAL-0002">FRAL 2018, ANR/DFG</a>) from 2019–2023.</p>
