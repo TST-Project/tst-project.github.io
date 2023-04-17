@@ -2,7 +2,7 @@ import createSqlWorker from './lib/sqlWorker.mjs';
 import SqlString from 'sqlstring-sqlite';
 import DataTable from 'datatables.net';
 import {hyphenateHTMLString} from './lib/hyphenate.mjs';
-import {Sanscript} from './sanscript.mjs';
+import {Sanscript} from 'https://tst-project.github.io/lib/js/sanscript.mjs';
 
 const ftssearch = async (query) => {
     
