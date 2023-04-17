@@ -301,8 +301,12 @@ footer a[href] {
     display: none;
 }
 #menu > div {
-    margin-right: 5rem;
+    margin-left: 5rem;
     padding: 0.5rem 1.5rem 0.5rem 1.5rem;
+}
+
+#menu > div:last-of-type {
+    padding-right: 0;
 }
 
 #menu .selected {
@@ -420,7 +424,10 @@ span.invisinote::after {
         overflow-x: auto;
     }
     #menu > div {
-        padding-right: 0;
+        margin-left: 3rem;
+    }
+    #menu > div:last-of-type {
+        padding-right: 1.5rem;
     }
 }
 
