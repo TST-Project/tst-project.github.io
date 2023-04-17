@@ -306,7 +306,7 @@ footer a[href] {
 }
 
 #menu > div:last-of-type {
-    padding-right: 0;
+    padding-right: 5px;
 }
 
 #menu .selected {
@@ -536,7 +536,7 @@ blockquote footer {
     }
     #menu > div {
         text-align: right;
-        margin-right: 0;
+        margin-right: 1rem;
     }
     #menu > div {
         display: none;
