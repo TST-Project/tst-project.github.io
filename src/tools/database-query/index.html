@@ -1,0 +1,293 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta charset="utf-8">
+      
+      <title>Texts Surrounding Texts: Database query</title>
+      
+      <link rel="icon" type="image/png" href="https://tst-project.github.io/lib/img/favicon-32.png">
+      <link rel="stylesheet" href="https://tst-project.github.io/lib/css/tufte.css">
+      <link rel="stylesheet" href="https://tst-project.github.io/lib/css/fonts.css">
+      <link rel="stylesheet" href="https://tst-project.github.io/lib/css/header.css">
+      <link rel="stylesheet" href="https://tst-project.github.io/lib/css/transcription.css">
+      <link rel="stylesheet" href="/node_modules/datatables.net-dt/css/jquery.dataTables.css">
+      <link rel="stylesheet" href="/vanillaSelectBox.css">
+      <link rel="stylesheet" href="/index.css">
+
+      <script type="module" src="/dbquery.mjs"></script>
+      <script type="module" src="/network.mjs"></script>
+   </head>
+   <body lang="en">
+    <article>
+    <nav id="menu">
+            <input id="menutoggle" type="checkbox">
+            <label id="togglelabel" for="menutoggle"><div>௳</div></label>
+            <div class="logo"><a href="/">TST<span style="font-feature-settings: 'aalt' 1">௳</span></a></div>
+            <div class="homebutton"><a href="/">Home</a></div>
+            <div class="dropper">
+                <a href="/collections/">Collections</a>
+                <div class="dropped">
+                    <a href="/collections/all/">All manuscripts</a>
+                    <a href="/collections/bnf/">BnF manuscripts</a>
+                    <div class="indent">
+                    <a href="/collections/bnf/ancienfonds/">Ancien fonds</a>
+                    <a href="/collections/bnf/ariel/">Ariel collection</a>
+                    <a href="/collections/bnf/burnouf/">Burnouf collection</a>
+                    <a href="/collections/bnf/cordier/">Cordier collection</a>
+                    <a href="/collections/bnf/ducler/">Ducler collection</a>
+                    <a href="/collections/bnf/haas/">Haas collection</a>
+                    <a href="/collections/bnf/reydellet/">Reydellet collection</a>
+                    <a href="/collections/bnf/vinson/">Vinson collection</a>
+                    </div>
+                    <a href="/collections/sub/">SUB manuscripts</a>
+                </div>
+            </div>
+            <div class="dropper">
+                <a href="/paratexts/">Paratexts</a>
+                <div class="dropped">
+                    <a href="/paratexts/blessings/">Blessings</a>
+                    <a href="/paratexts/colophons/">Colophons</a>
+                    <a href="/paratexts/headers/">Headers</a>
+                    <a href="/paratexts/invocations/">Invocations</a>
+                    <a href="/paratexts/ownership-statements/">Ownership statements</a>
+                    <a href="/paratexts/satellite-stanzas/">Satellite stanzas</a>
+                    <a href="/paratexts/tables-of-contents/">Tables of contents</a>
+                    <a href="/paratexts/titles/">Titles</a>
+                    <a href="/paratexts/tbc/">TBC</a>
+                </div>
+            </div>
+            <div class="dropper">
+                <a href="/palaeography/">Palæography</a>
+                <div class="dropped">
+                    <a href="/editor/entities.html">Tamil transliteration</a>
+                    <div class="indent">
+                        <a href="/palaeography/below-base-ligatures/">Below-base ligatures</a>
+                        <a href="/palaeography/post-base-ligatures/">Post-base ligatures</a>
+                    </div>
+                    <a href="/editor/entities-sa.html">Sanskrit transliteration</a>
+                </div>
+            </div>
+            <div class="dropper">
+                <a href="/tools/">Tools</a>
+                <div class="dropped">
+                    <a href="/editor">TST editor</a>
+                    <a href="https://github.com/chchch/quick-palaeographer">Quick palæographer</a>
+                    <a href="/xylotheque">Xylothèque</a>
+                </div>
+            </div>
+            <div><a href="https://tst.hypotheses.org/">Blog</a></div>
+            <div><a href="/search/">Search</a></div>
+        </nav>
+        <div class="wide">
+            <h1>Database query</h1>
+            <p>This interface can be used to retreive information about the manuscript collections by constructing a simple database query. For more complex queries, use the SQLite databases in the <a href="https://github.com/TST-Project/mss/tree/main/db">GitHub repository</a> in conjunction with software like <a href="https://sqlitebrowser.org">DB Browser for SQLite</a> or <a href="https://datasette.io">Datasette</a>. Alternatively, the <a href="https://github.com/TST-Project/mss">XML manuscript records</a> can be searched using a tool such as <a href="https://basex.org">BaseX</a>. Use the <a href="/search/">Search</a> facility for full-text search.</p>
+        </div>
+        <div class="wide">
+            <fieldset id="queryparameters"></fieldset>
+        </div>
+        <div class="wide" id="querycontainer">
+            <fieldset>
+                <legend>Search for (or leave blank):</legend>
+                <input type="text" id="queryinput" placeholder="search in Tamil script, Devanāgarī script, or IAST/Madras lexicon transliteration">
+            </fieldset>
+            <fieldset id="maincolumn">
+                <legend>In:</legend>
+                <div>
+                    <input type="radio" name="main" id="mss" value="mss" checked>
+                    <label for="mss">Manuscript shelfmarks</label>
+                </div>
+                <div>Paratexts</div>
+                <div class="indent">
+                    <input type="radio" name="main" id="blessing" value="blessing" >
+                    <label for="blessing">Blessings</label>
+                </div>
+                <div class="indent">
+                    <input type="radio" name="main" id="colophon" value="colophon" >
+                    <label for="colophon">Colophons</label>
+                </div>
+                <div class="indent">
+                    <input type="radio" name="main" id="header" value="header" >
+                    <label for="header">Headers</label>
+                </div>
+                <div class="indent">
+                    <input type="radio" name="main" id="invocation" value="invocation" >
+                    <label for="invocation">Invocations</label>
+                </div>
+                <div class="indent">
+                    <input type="radio" name="main" id="ownership-statement" value="ownership-statement" >
+                    <label for="ownership-statement">Ownership statements</label>
+                </div>
+                <div class="indent">
+                    <input type="radio" name="main" id="satellite-stanza" value="satellite-stanza" >
+                    <label for="satellite-stanza">Satellite stanzas</label>
+                </div>
+                <div class="indent">
+                    <input type="radio" name="main" id="table-of-contents" value="table-of-contents" >
+                    <label for="table-of-contents">Tables of contents</label>
+                </div>
+                <div class="indent">
+                    <input type="radio" name="main" id="paratexts_title" value="paratexts_title" >
+                    <label for="paratexts_title">Titles</label>
+                </div>
+                <div class="indent">
+                    <input type="radio" name="main" id="tbc" value="tbc" >
+                    <label for="tbc">TBC</label>
+                </div>
+                <div>Ligatures</div>
+                <div class="indent">
+                    <input type="radio" name="main" id="g_below-base" value="g_below-base" >
+                    <label for="g_below-base">Below-base</label>
+                </div>
+                <div class="indent">
+                    <input type="radio" name="main" id="g_post-base" value="g_post-base" >
+                    <label for="g_post-base">Post-base</label>
+                </div>
+            </fieldset>
+            <fieldset id="othercolumns">
+                <legend>Displaying the columns:</legend>
+                <div>
+                    <input type="checkbox" id="shelfmark" value="shelfmark" checked disabled>
+                    <label for="shelfmark">Shelfmark</label>
+                </div>
+                <div class="indent">
+                    <input type="checkbox" id="old_shelfmarks(Ancien fonds)" value="old_shelfmarks(Ancien fonds)">
+                    <label for="old_shelfmarks(Ancien fonds)">Ancien fonds shelfmark</label>
+                </div>
+                <div class="indent">
+                    <input type="checkbox" id="old_shelfmarks(Ariel)" value="old_shelfmarks(Ariel)">
+                    <label for="old_shelfmarks(Ariel)">Ariel shelfmark</label>
+                </div>
+                <div class="indent">
+                    <input type="checkbox" id="old_shelfmarks(w/d)" value="old_shelfmarks(w/d)">
+                    <label for="old_shelfmarks(w/d)">older Ariel shelfmark</label>
+                </div>
+                <div class="indent">
+                    <input type="checkbox" id="old_shelfmarks(Burnouf)" value="old_shelfmarks(Burnouf)">
+                    <label for="old_shelfmarks(Burnouf)">Burnouf shelfmark</label>
+                </div>
+                <div class="indent">
+                    <input type="checkbox" id="old_shelfmarks(Cordier)" value="old_shelfmarks(Cordier)">
+                    <label for="old_shelfmarks(Cordier)">Cordier shelfmark</label>
+                </div>
+                <div class="indent">
+                    <input type="checkbox" id="old_shelfmarks(Ducler)" value="old_shelfmarks(Ducler)">
+                    <label for="old_shelfmarks(Ducler)">Ducler shelfmark</label>
+                </div>
+                <div class="indent">
+                    <input type="checkbox" id="old_shelfmarks(Haas)" value="old_shelfmarks(Haas)">
+                    <label for="old_shelfmarks(Haas)">Haas shelfmark</label>
+                </div>
+                <div class="indent">
+                    <input type="checkbox" id="old_shelfmarks(Reydellet)" value="old_shelfmarks(Reydellet)">
+                    <label for="old_shelfmarks(Reydellet)">Reydellet shelfmark</label>
+                </div>
+                <div class="indent">
+                    <input type="checkbox" id="old_shelfmarks(Vinson)" value="old_shelfmarks(Vinson)">
+                    <label for="old_shelfmarks(Vinson)">Vinson shelfmark</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="repository" value="repository">
+                    <label for="repository">Repository</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="title" value="title">
+                    <label for="title">Manuscript title</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="languages" value="languages">
+                    <label for="languages">Manuscript languages</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="material" value="material">
+                    <label for="material">Material</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="extent" value="extent">
+                    <label for="extent">Extent</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="width" value="width">
+                    <label for="width">Leaf width</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="height" value="height">
+                    <label for="height">Leaf height</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="date" value="date">
+                    <label for="date">Manuscript date</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="images" value="images">
+                    <label for="images">Digital images</label>
+                </div>
+                <div class="notmss">Paratext/ligature location</div>
+                <div class="indent notmss">
+                    <input type="checkbox" id="synch" value="synch">
+                    <label for="synch">Codicological unit</label>
+                </div>
+                <div class="indent notmss">
+                    <input type="checkbox" id="milestone" value="milestone">
+                    <label for="milestone">Page/folio</label>
+                </div>
+                <div class="indent notmss">
+                    <input type="checkbox" id="placement" value="placement">
+                    <label for="placement">Placement</label>
+                </div>
+            </fieldset>
+            <fieldset id="personsfield">
+                <legend>Involving these people (or leave blank):</legend>
+                <select id="personsselect" style="display: none" multiple="true" size="15"></select>
+                <div id="personsspinner" style="display: none"><div></div></div>
+            </fieldset>
+                <button id="querybutton">Submit</button>
+            </div>
+
+        </div>
+        <section>
+            <nav id="tabright">
+                <div id="listview" class="selected">List view</div>
+                <div id="networkview">Network view</div>
+            </nav>
+            <div id="spinner"><div></div></div>
+            <table id="index" data-sqlcolumns="none"></table>
+            <div id="network"></div>
+        </section>
+        <footer>
+            <div>
+            <a href="https://anr.fr/"><img src="/logos/anr.png" title="Agence nationale de la recherche"></a> 
+            <a href="https://www.dfg.de/"><img src="/logos/dfg.png" title="Deutsche Forschungsgemeinschaft"></a> 
+            <a href="https://bnf.fr/"><img src="/logos/bnf.png" title="Bibliothèque nationale de France"></a> 
+            <a href="https://www.sub.uni-hamburg.de/"><img src="/logos/stabi.png" title="Staats- und Universitätsbibliothek Hamburg"></a>
+            <a href="https://cnrs.fr/"><img src="/logos/cnrs.png" title="Centre nationale de la recherche scientifique"></a>
+            <a href="https://www.uni-hamburg.de/"><img src="/logos/hamburg.png" title="Universität Hamburg"></a> 
+            </div>
+            <div>
+                <p id="fundingblurb"><em>Texts Surrounding Texts: Satellite stanzas, prefaces, &amp; colophons in South Indian manuscripts (BnF &amp; Hamburg Stabi collections)</em> was funded through a Franco-German collaboration in the Humanities and Social Sciences grant (<a href="https://anr.fr/Projet-ANR-18-FRAL-0002">FRAL 2018, ANR/DFG</a>) from 2019–2023.</p>
+                <address>
+                    Emmanuel FRANCIS<br>
+                    Centre d'études sud-asiatiques et himalayennes<br>
+                    CNRS/EHESS<br>
+                    8 Cr des Humanités<br>
+                    93300 Aubervilliers<br>
+                    France<br>
+                </address>
+                <address>
+                    Eva WILDEN<br>
+                    Universität Hamburg<br>
+                    Centre for the Study of Manuscript Cultures<br>
+                    Warburgstraße 28<br>
+                    20354 Hamburg<br>
+                    Deutschland
+                </address>
+            </div>
+        </footer>
+    </article>
+   
+
+
+
+
+
+
+</body></html>

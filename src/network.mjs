@@ -81,9 +81,8 @@ const networkstyle = [
     }
 ];
 
-const getNetwork = async (persname) => {
+const queryFromPersname = async (persname) => {
     const worker = await createSqlWorker('/mss/db/meta.db');
-    //const worker = await createSqlWorker('/meta.db');
     const query = 
         'SELECT path, mss.shelfmark as shelfmark, mss.width as width, mss.height as height, persons.persname as persname, persons.role as role FROM '+
         '('+
@@ -94,8 +93,32 @@ const getNetwork = async (persname) => {
         'INNER JOIN persons '+
         'INNER JOIN mss '+
         'WHERE path = persons.filename AND path = mss.filename AND persons.role != ""';
-    const result = await worker.db.query(query);
+    return await worker.db.query(query);
+};
 
+const queryFromTable = async () => {
+
+    const filenames = document.getElementById('index').dataset.files;
+
+    const worker = await createSqlWorker('/mss/db/meta.db');
+    const query = 
+        'SELECT path, mss.shelfmark as shelfmark, mss.width as width, mss.height as height, persons.persname as persname, persons.role as role FROM '+
+        '('+
+            'SELECT persons.filename as path, persons.persname '+
+            'FROM persons '+
+            `WHERE persons.filename IN (${filenames}) AND persons.role != ""`+
+        ') AS SUBQUERY '+
+        'INNER JOIN persons '+
+        'INNER JOIN mss '+
+        'WHERE path = persons.filename AND path = mss.filename AND persons.role != ""';
+    return await worker.db.query(query);
+};
+
+const getNetwork = async (persname) => {
+    const result = persname ?
+        await queryFromPersname(persname) :
+        await queryFromTable();
+    
     const nodes = new Map();
 
     const parsesize = (str) => {
