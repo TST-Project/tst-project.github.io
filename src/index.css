@@ -533,6 +533,9 @@ blockquote footer {
 #querycontainer {
     display: none;
 }
+#queryparameters {
+    display: none;
+}
 #queryparameters p {
     font-size: 1.4rem;
     line-height: 1.5rem;

@@ -105,7 +105,7 @@ const getQuery = (table) => {
         document.getElementById(searchcolumn).checked = true;
 
         const maincolname = document.querySelector(`label[for='${searchcolumn}']`).textContent;
-        querydesc += `<p>Search: <em>${searchtext}</em> in ${maincolname}</p>`;
+        querydesc += `<p><strong>Search:</strong> <em>${searchtext}</em> <strong>in</strong> ${maincolname}</p>`;
     }
 
     const sqlcolumns = urlParams.get('sqlcolumns');
@@ -115,7 +115,7 @@ const getQuery = (table) => {
         document.getElementById(col).checked = true;
         collist.push(document.querySelector(`label[for='${col}']`).textContent);
     }
-    querydesc += `<p>Table columns: ${collist.join(', ')}`;
+    querydesc += `<p><strong>Table columns:</strong> ${collist.join(', ')}`;
 
     const persons = urlParams.get('persons');
     let personsarr = [];
@@ -123,7 +123,7 @@ const getQuery = (table) => {
         personsarr = JSON.parse(persons);
         table.dataset.persons = personsarr.join(', ');
         const personsstr = personsarr.map(str => str.replace(/^'/,'').replace(/'$/,'')).join(', ');
-        querydesc += `<p>Persons involved: ${personsstr}`;
+        querydesc += `<p><strong>Persons involved:</strong> ${personsstr}`;
     }
 
     querydesc += '<p><button id="revisequery" style="display: none">Revise query</button></p>';
@@ -144,6 +144,7 @@ const reviseQuery = (personsarr) => {
 
 const prepForm = (personsarr) => {
     document.getElementById('spinner').style.display = 'none';
+    document.getElementById('queryparameters').style.display = 'none';
     document.getElementById('querycontainer').style.display = 'flex';
     getPersons(personsarr);
 
@@ -159,6 +160,7 @@ window.addEventListener('load', async () => {
     if(window.location.search !== '') {
         const table = document.getElementById('index');
         getQuery(table);
+        document.getElementById('queryparameters').style.display = 'flex';
         makeTable(await getData(table), table);
 
         document.getElementById('revisequery').style.display = 'block';
