@@ -157,11 +157,32 @@ header {
     justify-content: center;
 }
 
+#personsspinner {
+    display: flex;
+    /*position: absolute;
+    width: 100vw;
+    height: 100vh;*/
+    margin: 0 auto;
+    padding: 2rem;
+    align-items: center;
+    justify-content: center;
+}
+
 #spinner > div {
     display: inline-block;
     width: 5rem;
     height: 5rem;
     border: 10px solid rgba(0,0,0,.3);
+    border-radius: 50%;
+    border-top-color: rgb(0,0,0);
+    animation: spin 1s linear infinite;
+}
+
+#personsspinner > div {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: 5px solid rgba(0,0,0,.3);
     border-radius: 50%;
     border-top-color: rgb(0,0,0);
     animation: spin 1s linear infinite;
@@ -204,6 +225,10 @@ thead a:link {
 
 tbody th {
     text-align: left;
+}
+
+.dataTables_scrollHeadInner {
+    margin: 0 auto; /* otherwise scrollX: true puts the header in the wrong place for narrow tables*/
 }
 
 th.subpart, .dataTable-table > tbody > tr > th.subpart {
@@ -489,13 +514,97 @@ blockquote footer {
     width: 100%;
 }
 
-#ftsinput {
+#ftsinput, #queryinput {
     font-size: 1.2rem;
     padding: 0.5rem;
+    border-radius: 3px;
+}
+
+#ftsinput {
     width: 90ch;
     max-width: 98vw;
-    border-radius: 3px;
     visibility: hidden;
+}
+#queryinput {
+    width: 100%;
+    max-width: 80vw;
+}
+
+#querycontainer {
+    display: none;
+}
+#queryparameters p {
+    font-size: 1.4rem;
+    line-height: 1.5rem;
+    padding: 0;
+    margin: 1rem;
+    width: 100%;
+}
+
+fieldset {
+    display: flex; 
+    flex-direction: column; 
+    align-items: flex-start;
+    font-size: 1.2rem;
+    width: 80%;
+    margin: 1rem;
+}
+#personsfield {
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+fieldset div {
+    padding: 0.5rem;
+}
+.indent {
+    margin-left: 2rem;
+}
+
+.vsb-menu p {
+    line-height: inherit;
+    width: inherit;
+    margin: inherit;
+}
+
+.vsb-main {
+    margin-right: 0.7rem;
+}
+
+.vsb-main .title {
+    padding-right: 2px;
+}
+
+.vsb-main button {
+    font-size: 1.4rem;
+    font-family: brill, et-book, serif;
+    border-radius: 0.3rem;
+}
+
+.vsb-main button:hover {
+    color: black;
+}
+
+.vsb-menu {
+    margin-left: 10px;
+    margin-top: -10px;
+    max-width: 50em;
+}
+
+.vsb-menu .multi li {
+    font-size: 1.2rem;
+}
+
+.vsb-menu .multi li.grouped-option {
+    font-size: 1.2rem;
+    padding-left: 1.5em;
+}
+
+.vsb-menu li.grouped-option i {
+    display: none;
+}
+
+.vsb-menu li.grouped-option.open span {
+    margin-left: 5px;
 }
 
 @media (max-width: 1080px) {
