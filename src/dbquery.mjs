@@ -2,6 +2,7 @@ import createSqlWorker from './lib/sqlWorker.mjs';
 import SqlString from 'sqlstring-sqlite';
 import {vanillaSelectBox} from './lib/vanillaSelectBox.mjs';
 import {makeTable, getData, allcolumns} from './table.mjs';
+import {Transliterate} from './lib/transliterate.mjs';
 
 const getPersons = async (checked) => {
     const spinner = document.getElementById('personsspinner');
@@ -90,7 +91,7 @@ const getQuery = (table) => {
     
     const searchtext = urlParams.get('searchtext');
     if(searchtext) {
-        table.dataset.searchtext = SqlString.escape(`%${searchtext}%`);
+        table.dataset.searchtext = SqlString.escape(`%${Transliterate(searchtext)}%`);
         document.getElementById('queryinput').value = searchtext;
 
         const searchcolumn = urlParams.get('searchcolumn');

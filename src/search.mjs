@@ -2,23 +2,15 @@ import createSqlWorker from './lib/sqlWorker.mjs';
 import SqlString from 'sqlstring-sqlite';
 import DataTable from 'datatables.net';
 import {hyphenateHTMLString} from './lib/hyphenate.mjs';
-import {Sanscript} from 'https://tst-project.github.io/lib/js/sanscript.mjs';
+import {Transliterate} from './lib/transliterate.mjs';
 
 const ftssearch = async (query) => {
     
     document.getElementById('spinner').style.display = 'flex';
 
     const worker = await createSqlWorker('/mss/db/fts.db');
-    
-    const shortened = query.replaceAll('\u090F','\u090E')
-                           .replaceAll('\u0913','\u0912')
-                           .replaceAll('\u0947','\u0946')
-                           .replaceAll('\u094B','\u094A');
 
-    const literated = Sanscript.t(
-        Sanscript.t(shortened,'tamil','iast'),
-        'devanagari', 'iast')
-        .replace(/^⁰|([^\d⁰])⁰/g,'$1¹⁰');
+    const literated = Transliterate(query);
         
     const clean = SqlString.escape(literated)
                     .replace(/"/g,'""')
