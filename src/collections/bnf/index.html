@@ -14,6 +14,7 @@
       <link rel="stylesheet" href="/index.css">
 
       <script type="module" src="/index.mjs"></script>
+      <script type="module" src="/network.mjs"></script>
    </head>
    <body lang="en">
     <article>
@@ -86,10 +87,15 @@
             </div>
         </header>
         <section>
+            <nav id="tabright">
+                <div id="listview" class="selected">List view</div>
+                <div id="networkview">Network view</div>
+            </nav>
             <div id="spinner">
                 <div></div>
             </div>
             <table id="index" data-repository="BnF" data-sqlcolumns="shelfmark, title, languages, material, extent, date, images"></table>
+            <div id="network"></div>
         </section>
         <footer>
             <div>
