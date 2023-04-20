@@ -573,6 +573,10 @@ fieldset div {
     margin-right: 0.7rem;
 }
 
+.vsb-main .caret {
+    margin-right: 4px;
+}
+
 .vsb-main .title {
     padding-right: 2px;
 }
