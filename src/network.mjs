@@ -3,6 +3,11 @@ import Cytoscape from 'cytoscape';
 import d3Force from 'cytoscape-d3-force';
 Cytoscape.use(d3Force);
 
+const roles = ['annotator','author','collector','commissioner','editor','owner','scribe'];
+const colours = ['#a6cee3','#d95f02','#7570b3','#e7298a','#e6ab02','#a6761d','#66a61e'];
+//const colours = ['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628'];
+const rolemap = new Map(roles.map((role,i) => [role,colours[i]]));
+
 const networkstyle = [
     {selector: 'node',
      style: {
@@ -39,7 +44,7 @@ const networkstyle = [
          'label': '',
          'font-family': 'brill, et-book, Palatino, Palatino Linotype, Palatino LT STD, Book Antiqua, Georgia, serif',
          'text-rotation': 'autorotate',
-         'line-color': '#ccc',
+         'line-color': (edge) => rolemap.get(edge.data('popup')) || '#ccc',
          'target-arrow-color': '#ccc',
          'target-arrow-shape': 'none',
          'line-opacity': '0.5',
@@ -53,6 +58,7 @@ const networkstyle = [
          'line-opacity': '1'
      }
     },
+    /*
     {selector: 'edge.scribe',
      style: {
          'width': 2,
@@ -79,6 +85,7 @@ const networkstyle = [
         'background-opacity': '0.8'
      }
     }
+    */
 ];
 
 const queryFromPersname = async (persname) => {
@@ -161,8 +168,7 @@ const getNetwork = async (persname) => {
                 source: res.persname,
                 target: res.path,
                 popup: res.role
-            },
-            classes: res.role
+            }
         });
     }
     
@@ -196,6 +202,8 @@ const drawNetwork = async () => {
        minZoom: 0.5,
        style: networkstyle
     });
+    
+    container.appendChild(makeLegend());
 
     const mouseUp  = (cy,e) => {
         cy.$('.clicked').removeClass('clicked');
@@ -204,6 +212,44 @@ const drawNetwork = async () => {
     };
 
     cy.on('tapend',mouseUp.bind(null,cy));
+};
+
+const makeLegend = () => {
+    const legend = document.createElement('div');
+    legend.id = 'networklegend';
+    
+    const mscontainer = document.createElement('div');
+    const msbox = document.createElement('span');
+    msbox.classList.add('msbox');
+    const mstitle = document.createElement('span');
+    mstitle.append('manuscript');
+    mscontainer.append(msbox);
+    mscontainer.append(mstitle);
+    legend.append(mscontainer);
+
+    const perscontainer = document.createElement('div');
+    const persbox = document.createElement('span');
+    persbox.classList.add('persbox');
+    persbox.append('●');
+    const perstitle = document.createElement('span');
+    perstitle.append('person');
+    perscontainer.append(persbox);
+    perscontainer.append(perstitle);
+    legend.append(perscontainer);
+    const allroles = [...rolemap,['other','#ccc']];
+    for(const [role, colour] of allroles) {
+        const div = document.createElement('div');
+        const line = document.createElement('span');
+        //line.append('―');
+        line.style.borderBottom = `3px solid ${colour}`;
+        line.classList.add('line');
+        const title = document.createElement('span');
+        title.append(role);
+        div.appendChild(line);
+        div.appendChild(title);
+        legend.appendChild(div);
+    }
+    return legend;
 };
 
 document.getElementById('tabright').addEventListener('click',(e) => {
