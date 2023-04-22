@@ -55,12 +55,16 @@ const getData = async (table) => {
     const columnfields = sqlcolumns ? sqlcolumns.split(', ') : defaultfields;
     const columnsarr = [];
 
+    let distinct = 'DISTINCT';
+
     for(const field of columnfields) {
         const config = allcolumns.get(field);
         if(!config) continue;
         columnsarr.push(config.sql);
-        if(config.table)
+        if(config.table) {
             joins.push(`INNER JOIN ${config.table} ON ${config.table}.filename = mss.filename`);
+            distinct = ''; // for paratexts; might have multiples in the same file
+        }
     }
     
     const collection = table.dataset.collection;
@@ -92,7 +96,7 @@ const getData = async (table) => {
     const joinstr = joins.join(' ');
     const conditionstr = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
 
-    const result = await worker.db.query(`SELECT DISTINCT ${columnstr} FROM mss ${joinstr} ${conditionstr} ORDER BY mss.filename`);
+    const result = await worker.db.query(`SELECT ${distinct} ${columnstr} FROM mss ${joinstr} ${conditionstr} ORDER BY mss.filename`);
     return processResult(result,columnfields);
 };
 
