@@ -92,7 +92,7 @@ const getData = async (table) => {
     const joinstr = joins.join(' ');
     const conditionstr = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
 
-    const result = await worker.db.query(`SELECT ${columnstr} FROM mss ${joinstr} ${conditionstr} ORDER BY mss.filename`);
+    const result = await worker.db.query(`SELECT DISTINCT ${columnstr} FROM mss ${joinstr} ${conditionstr} ORDER BY mss.filename`);
     return processResult(result,columnfields);
 };
 

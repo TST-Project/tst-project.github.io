@@ -149,6 +149,7 @@ const prepForm = (personsarr) => {
     document.getElementById('querycontainer').style.display = 'flex';
     getPersons(personsarr);
 
+    updateColumnsList();
     const maincolumn = document.getElementById('maincolumn');
     for(const el of maincolumn.querySelectorAll('input'))
         el.addEventListener('change',updateColumnsList);
