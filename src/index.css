@@ -407,6 +407,7 @@ footer a[href] {
     display: block;
 }
 
+/*
 .legend-square {
     width: 20px;
     height: 20px;
@@ -427,6 +428,7 @@ footer a[href] {
     position: absolute;
     z-index: -1;
 }
+*/
 
 .highlit {
     background: rgba(239,239,61,0.5);
@@ -508,13 +510,14 @@ address {
 }
 
 #networklegend {
-    position: absolute;
+    position: relative;
     top: 0;
     display: flex;
     flex-direction: row;
     justify-content: center;
     flex-wrap: wrap;
-    background: rgba(255,255,255,0.85);
+    /*background: rgba(255,255,248,0.85);*/
+    background: white;
     padding: 0.5rem 0 0.5rem 0;
     font-size: 1.2rem;
     border-bottom: 1px dotted black;
@@ -530,6 +533,7 @@ address {
 }
 #networklegend .line {
     width: 1.5rem;
+    opacity: 0.5;
     display: inline-block;
     vertical-align: middle;
 }

@@ -203,7 +203,7 @@ const drawNetwork = async () => {
        style: networkstyle
     });
     
-    container.appendChild(makeLegend());
+    container.before(makeLegend());
 
     const mouseUp  = (cy,e) => {
         cy.$('.clicked').removeClass('clicked');
