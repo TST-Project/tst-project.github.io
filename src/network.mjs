@@ -4,7 +4,7 @@ import d3Force from 'cytoscape-d3-force';
 Cytoscape.use(d3Force);
 
 const roles = ['annotator','author','collector','commissioner','editor','owner','scribe'];
-const colours = ['#a6cee3','#d95f02','#7570b3','#e7298a','#e6ab02','#a6761d','#66a61e'];
+const colours = ['#a6cee3','#e41a1c','#7570b3','#e7298a','#e6ab02','#a6761d','#66a61e'];
 //const colours = ['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628'];
 const rolemap = new Map(roles.map((role,i) => [role,colours[i]]));
 
@@ -218,6 +218,10 @@ const makeLegend = () => {
     const legend = document.createElement('div');
     legend.id = 'networklegend';
     
+    const hexToRgb = (hex) => {
+        return {r:'0x'+hex[1]+hex[2]|0,g:'0x'+hex[3]+hex[4]|0,b:'0x'+hex[5]+hex[6]|0};
+    };
+
     const mscontainer = document.createElement('div');
     const msbox = document.createElement('span');
     msbox.classList.add('msbox');
@@ -236,12 +240,13 @@ const makeLegend = () => {
     perscontainer.append(persbox);
     perscontainer.append(perstitle);
     legend.append(perscontainer);
-    const allroles = [...rolemap,['other','#ccc']];
+    const allroles = [...rolemap,['other','#cccccc']];
     for(const [role, colour] of allroles) {
         const div = document.createElement('div');
         const line = document.createElement('span');
         //line.append('―');
-        line.style.borderBottom = `3px solid ${colour}`;
+        const rgb = hexToRgb(colour);
+        line.style.borderBottom = `3px solid rgba(${rgb.r},${rgb.g},${rgb.b},0.8)`;
         line.classList.add('line');
         const title = document.createElement('span');
         title.append(role);
