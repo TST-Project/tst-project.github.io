@@ -266,6 +266,7 @@ document.getElementById('tabright').addEventListener('click',(e) => {
         document.getElementById('networkview').classList.remove('selected');
         document.getElementById('index_wrapper').style.display = 'block';
         document.getElementById('network').style.display = 'none';
+        document.getElementById('networklegend').style.display = 'none';
         return;
     }
 
@@ -274,6 +275,8 @@ document.getElementById('tabright').addEventListener('click',(e) => {
         const listview = document.getElementById('listview').classList.remove('selected');
         document.getElementById('index_wrapper').style.display = 'none';
         document.getElementById('network').style.display = 'block';
+        const legend = document.getElementById('networklegend');
+        if(legend) legend.style.display = 'flex';
         if(!document.getElementById('network').classList.contains('__________cytoscape_container'))
             drawNetwork();
 
