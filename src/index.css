@@ -547,6 +547,7 @@ address {
 }
 #networklegend .persbox {
     color: #666;
+    vertical-align: -1px;
 }
 
 blockquote {
