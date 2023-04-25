@@ -113,7 +113,7 @@ const processResult = (result,columnfields) => {
     
     const columns = columnfields.map(field => {
           const config = allcolumns.get(field);
-          const ret = {data: field, title: config.title};
+          const ret = {data: field, title: config.title, name: field};
           if(config.type) ret.type = config.type;
           if(config.render) ret.render = config.render;
           return ret;

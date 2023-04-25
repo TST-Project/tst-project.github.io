@@ -3,7 +3,6 @@ import Chart from 'chart.js/auto';
 const getData = (dt, colx, coly, limit) => {
     const textindex = dt.column(`${colx}:name`).index();
     const placementindex = dt.column(`${coly}:name`).index();
-    console.log(placementindex);
     const rows = dt.rows({search: 'applied'}).nodes();
     const data = rows.map(el => {
         const placestr = el.children.item(placementindex).textContent.trim();
@@ -24,7 +23,6 @@ const getData = (dt, colx, coly, limit) => {
         const paratext = parclone.textContent.trim().replace(/\s+/g,' ').replaceAll('-','').toLowerCase();
         return [paratext,placement];
     });
-    console.log(data.toArray());
     const datamap = new Map();
     for(const datum of data.toArray()) {
         const el = datamap.get(datum[0]);
