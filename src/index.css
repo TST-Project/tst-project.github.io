@@ -446,6 +446,10 @@ span.invisinote::after {
     content: '[' attr(data-content) ']';
 }
 
+.stats {
+    display: none;
+}
+
 @media (max-width: 1200px) {
     .dataTable-container {
         overflow-x: auto;
