@@ -3,7 +3,7 @@ import Chart from 'chart.js/auto';
 const getData = (dt, colname, limit) => {
     const textindex = dt.column('blessing:name').index();
     const placementindex = dt.column(`${colname}:name`).index();
-    const rows = dt.rows().nodes();
+    const rows = dt.rows({search: 'applied'}).nodes();
     const data = rows.map(el => {
         const placestr = el.children.item(placementindex).textContent.trim();
         const placesplit = placestr.split(', ');
@@ -15,8 +15,12 @@ const getData = (dt, colname, limit) => {
             else if(placesplit.includes('bottom')) placejoin = 'bottom margin';
         }
         const placement = placejoin || placestr || 'not specified';
-        
-        const paratext = el.children.item(textindex).textContent.trim().replace(/\s+/g,' ').toLowerCase();
+       
+        const parclone = el.children.item(textindex).cloneNode(true);
+        for(const invis of parclone.querySelectorAll('.invisible')) {
+            invis.remove();
+        }
+        const paratext = parclone.textContent.trim().replace(/\s+/g,' ').replaceAll('-','').toLowerCase();
         return [paratext,placement];
     });
 
@@ -60,6 +64,8 @@ const getData = (dt, colname, limit) => {
 
 const drawStats = (dt) => {
     const statbox = document.getElementById('stats');
+    statbox.innerHTML = '';
+    statbox.dataset.search = dt.search();
     const colname = statbox.dataset.labels || 'placement';
     const datasets = getData(dt,colname,10);
     const fontfam = '"Brill", "et-book", "Noto Serif Tamil", "TST Grantha", "Bangla", "PedanticDevanagari", "PedanticMalayalam", "PedanticTelugu", "Noto Sans Newa", "Satisar Sharada", "Tibetan Machine Uni", "Noto Sans Nandinagari", Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", "Georgia", serif';
@@ -111,10 +117,13 @@ const StatsListen = (dt) => {
             e.target.classList.add('selected');
             const listview = document.getElementById('listview').classList.remove('selected');
             document.getElementById('index_wrapper').style.display = 'none';
-            document.getElementById('stats').style.display = 'block';
-            if(!document.getElementById('stats').querySelector('canvas'))
+            const statsbox = document.getElementById('stats');
+            statsbox.style.display = 'block';
+            if(!statsbox.querySelector('canvas'))
                 drawStats(dt);
-
+            else if(statsbox.dataset.hasOwnProperty('search') && 
+                   statsbox.dataset.search !== dt.search() )
+                drawStats(dt);
         }
 });
 };
