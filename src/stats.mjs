@@ -48,6 +48,7 @@ const getData = (dt, colname, limit) => {
 
     const clipped = sorted.slice(0,limit);
     const clippedplaces = new Set(clipped.map(r => Object.keys(r[1].placement)).flat());
+    console.log(clippedplaces);
     const transformed = [...clippedplaces].map(x => {
         const ret = {};
         for(const y of clipped) {
@@ -59,7 +60,6 @@ const getData = (dt, colname, limit) => {
             data: ret
         };
     });
-    console.log(transformed);
     return transformed;
 };
 
