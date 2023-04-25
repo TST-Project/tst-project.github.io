@@ -41,6 +41,7 @@ const getData = (dt, colname, limit) => {
             datamap.set(datum[0],ret);
         }
     }
+    console.log(datamap);
     const sorted = [...datamap];
     sorted.sort((a,b) => {
         return a[1].count < b[1].count;
@@ -48,7 +49,6 @@ const getData = (dt, colname, limit) => {
 
     const clipped = sorted.slice(0,limit);
     const clippedplaces = new Set(clipped.map(r => Object.keys(r[1].placement)).flat());
-    console.log(clippedplaces);
     const transformed = [...clippedplaces].map(x => {
         const ret = {};
         for(const y of clipped) {
