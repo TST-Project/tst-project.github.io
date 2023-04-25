@@ -1,8 +1,10 @@
 import Chart from 'chart.js/auto';
 
 const getData = (dt, colname, limit) => {
+    console.log(colname);
     const textindex = dt.column('blessing:name').index();
-    const placementindex = dt.column(`${colname}:name`).index();
+    //const placementindex = dt.column(`${colname}:name`).index();
+    const placementindex = dt.column('placement:name').index();
     const rows = dt.rows({search: 'applied'}).nodes();
     const data = rows.map(el => {
         const placestr = el.children.item(placementindex).textContent.trim();
@@ -23,7 +25,6 @@ const getData = (dt, colname, limit) => {
         const paratext = parclone.textContent.trim().replace(/\s+/g,' ').replaceAll('-','').toLowerCase();
         return [paratext,placement];
     });
-
     const datamap = new Map();
     for(const datum of data.toArray()) {
         const el = datamap.get(datum[0]);
@@ -41,7 +42,6 @@ const getData = (dt, colname, limit) => {
             datamap.set(datum[0],ret);
         }
     }
-    console.log(datamap);
     const sorted = [...datamap];
     sorted.sort((a,b) => {
         return a[1].count < b[1].count;
