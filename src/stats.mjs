@@ -1,10 +1,9 @@
 import Chart from 'chart.js/auto';
 
-const getData = (dt, colname, limit) => {
-    console.log(colname);
-    const textindex = dt.column('blessing:name').index();
-    //const placementindex = dt.column(`${colname}:name`).index();
-    const placementindex = dt.column('placement:name').index();
+const getData = (dt, colx, coly, limit) => {
+    const textindex = dt.column(`${colx}:name`).index();
+    const placementindex = dt.column(`${coly}:name`).index();
+    console.log(placementindex);
     const rows = dt.rows({search: 'applied'}).nodes();
     const data = rows.map(el => {
         const placestr = el.children.item(placementindex).textContent.trim();
@@ -25,6 +24,7 @@ const getData = (dt, colname, limit) => {
         const paratext = parclone.textContent.trim().replace(/\s+/g,' ').replaceAll('-','').toLowerCase();
         return [paratext,placement];
     });
+    console.log(data.toArray());
     const datamap = new Map();
     for(const datum of data.toArray()) {
         const el = datamap.get(datum[0]);
@@ -67,8 +67,9 @@ const drawStats = (dt) => {
     const statbox = document.getElementById('stats');
     statbox.innerHTML = '';
     statbox.dataset.search = dt.search();
-    const colname = statbox.dataset.labels || 'placement';
-    const data = getData(dt,colname,10);
+    const colx = statbox.dataset.x || 'blessing';
+    const coly = statbox.dataset.y || 'placement';
+    const data = getData(dt,colx,coly,10);
     const fontfam = '"Brill", "et-book", "Noto Serif Tamil", "TST Grantha", "Bangla", "PedanticDevanagari", "PedanticMalayalam", "PedanticTelugu", "Noto Sans Newa", "Satisar Sharada", "Tibetan Machine Uni", "Noto Sans Nandinagari", Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", "Georgia", serif';
     statbox.style.display = 'block';
     const canvas = document.createElement('canvas');
