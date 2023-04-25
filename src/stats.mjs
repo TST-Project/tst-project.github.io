@@ -59,6 +59,7 @@ const getData = (dt, colname, limit) => {
             data: ret
         };
     });
+    console.log(transformed);
     return transformed;
 };
 
@@ -67,7 +68,7 @@ const drawStats = (dt) => {
     statbox.innerHTML = '';
     statbox.dataset.search = dt.search();
     const colname = statbox.dataset.labels || 'placement';
-    const datasets = getData(dt,colname,10);
+    const data = getData(dt,colname,10);
     const fontfam = '"Brill", "et-book", "Noto Serif Tamil", "TST Grantha", "Bangla", "PedanticDevanagari", "PedanticMalayalam", "PedanticTelugu", "Noto Sans Newa", "Satisar Sharada", "Tibetan Machine Uni", "Noto Sans Nandinagari", Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", "Georgia", serif';
     statbox.style.display = 'block';
     const canvas = document.createElement('canvas');
@@ -78,7 +79,7 @@ const drawStats = (dt) => {
             type: 'bar',
             options: {
                 scales: {
-                    x: { stacked: true, ticks: {font: {family: fontfam, size: 18}} },
+                    x: { stacked: true, ticks: {font: {family: fontfam, size: 18}, color: 'rgb(17,17,17)'} },
                     y: { stacked: true, ticks: {font: {family: fontfam, size: 16}} }
                 },
                 plugins: {
@@ -87,13 +88,18 @@ const drawStats = (dt) => {
                             font: {
                                 family: fontfam,
                                 size: 18
-                            }
+                            },
+                            color: 'rgb(17,17,17)'
                         }
+                    },
+                    tooltip: {
+                        titleFont: { family: fontfam, size: 16 },
+                        bodyFont: { family: fontfam, size: 14 }
                     }
                 }
             },
             data: {
-                datasets: datasets
+                datasets: data
             }
         }
     );
