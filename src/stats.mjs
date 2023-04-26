@@ -61,14 +61,51 @@ const getData = (dt, colx, coly, limit) => {
     return transformed;
 };
 
+const fontfam = '"Brill", "et-book", "Noto Serif Tamil", "TST Grantha", "Bangla", "PedanticDevanagari", "PedanticMalayalam", "PedanticTelugu", "Noto Sans Newa", "Satisar Sharada", "Tibetan Machine Uni", "Noto Sans Nandinagari", Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", "Georgia", serif';
+
+const chartoptions =  {
+    scales: {
+        x: { stacked: true, ticks: {font: {family: fontfam, size: 18}, color: 'rgb(17,17,17)'} },
+        y: { stacked: true, ticks: {font: {family: fontfam, size: 16}} }
+    },
+    plugins: {
+        legend: {
+            labels: {
+                font: {
+                    family: fontfam,
+                    size: 18
+                },
+                color: 'rgb(17,17,17)'
+            }
+        },
+        title: {
+            display: false,
+            font: {
+                family: fontfam,
+                size: 18
+            }
+        },
+        tooltip: {
+            titleFont: { family: fontfam, size: 16 },
+            bodyFont: { family: fontfam, size: 14 }
+        }
+    }
+};
+
 const drawStats = (dt) => {
     const statbox = document.getElementById('stats');
     statbox.innerHTML = '';
     statbox.dataset.search = dt.search();
+    if(statbox.dataset.search) {
+        chartoptions.plugins.title.display = true;
+        chartoptions.plugins.title.text = `Filter: ${statbox.dataset.search}` ;
+    }
+    else
+        chartoptions.plugins.title.display =  false ;
+
     const colx = statbox.dataset.x || 'blessing';
     const coly = statbox.dataset.y || 'placement';
     const data = getData(dt,colx,coly,10);
-    const fontfam = '"Brill", "et-book", "Noto Serif Tamil", "TST Grantha", "Bangla", "PedanticDevanagari", "PedanticMalayalam", "PedanticTelugu", "Noto Sans Newa", "Satisar Sharada", "Tibetan Machine Uni", "Noto Sans Nandinagari", Palatino, "Palatino Linotype", "Palatino LT STD", "Book Antiqua", "Georgia", serif';
     statbox.style.display = 'block';
     const canvas = document.createElement('canvas');
     statbox.appendChild(canvas);
@@ -76,27 +113,7 @@ const drawStats = (dt) => {
         canvas,
         {
             type: 'bar',
-            options: {
-                scales: {
-                    x: { stacked: true, ticks: {font: {family: fontfam, size: 18}, color: 'rgb(17,17,17)'} },
-                    y: { stacked: true, ticks: {font: {family: fontfam, size: 16}} }
-                },
-                plugins: {
-                    legend: {
-                        labels: {
-                            font: {
-                                family: fontfam,
-                                size: 18
-                            },
-                            color: 'rgb(17,17,17)'
-                        }
-                    },
-                    tooltip: {
-                        titleFont: { family: fontfam, size: 16 },
-                        bodyFont: { family: fontfam, size: 14 }
-                    }
-                }
-            },
+            options: chartoptions,
             data: {
                 datasets: data
             }
