@@ -20,7 +20,7 @@ const getData = (dt, colx, coly, limit) => {
         for(const invis of parclone.querySelectorAll('.invisible')) {
             invis.remove();
         }
-        const paratext = parclone.textContent.trim().replace(/\s+/g,' ').replaceAll('-','').toLowerCase();
+        const paratext = parclone.textContent.trim().replace(/\s+/g,' ').replaceAll(/[-\u00AD]/g,'').toLowerCase();
         return [paratext,placement];
     });
     const datamap = new Map();
