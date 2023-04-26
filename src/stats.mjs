@@ -17,7 +17,7 @@ const getData = (dt, colx, coly, limit) => {
         const placement = placejoin || placestr || 'not specified';
        
         const parclone = el.children.item(textindex).cloneNode(true);
-        for(const invis of parclone.querySelectorAll('.invisible, .milestone')) {
+        for(const invis of parclone.querySelectorAll('.invisible, .milestone, .note')) {
             invis.remove();
         }
         const paratext = parclone.textContent.trim().replace(/\s+/g,' ').replaceAll(/[-\u00AD]/g,'').toLowerCase();
