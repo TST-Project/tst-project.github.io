@@ -133,6 +133,7 @@ const StatsListen = (dt) => {
             document.getElementById('stats').style.display = 'none';
 
             document.getElementById('index_wrapper').style.display = 'block';
+            dt.columns.adjust().responsive.recalc();
             /*
             document.getElementById('index_wrapper').style.paddingTop = '1rem';
             document.getElementById('index_wrapper').style.paddingBottom = '1rem';

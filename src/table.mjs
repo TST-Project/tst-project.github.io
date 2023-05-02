@@ -184,10 +184,15 @@ const makeTable = (data, table) => {
     const toshow = document.getElementById('filter_inputs');
     if(toshow.style.height === '0px') {
         toshow.style.height = 'auto';
-        for(const input of toshow.querySelectorAll('input')) {
-            input.style.display = 'block';
-            input.style.marginBottom = '1rem';
-            input.style.marginTop = '1rem';
+        const inputs = [...toshow.querySelectorAll('input')];
+        const ths = toshow.nextElementSibling.querySelectorAll('th');
+        for(let n=0;n<inputs.length;n++) {
+            if(ths.item(n).style.display !== 'none') {
+                const input = inputs[n];
+                input.style.display = 'block';
+                input.style.marginBottom = '1rem';
+                input.style.marginTop = '1rem';
+            }
         }
         e.target.textContent = '↑';
         e.target.title = 'Less filters';
@@ -208,7 +213,30 @@ const makeTable = (data, table) => {
   const tabs = document.getElementById('tabright');
   if(tabs) tabs.style.visibility = 'visible';
   document.getElementById('index').style.visibility = 'visible';
-    
+  //dataTable.columns.adjust().responsive.recalc();
+
+  dataTable.on('responsive-resize', () => {
+
+    const toshow = document.getElementById('filter_inputs');
+    if(toshow.style.height === '0px') return;
+
+    const inputs = [...toshow.querySelectorAll('input')];
+    const ths = toshow.nextElementSibling.querySelectorAll('th');
+    for(let n=0;n<inputs.length;n++) {
+        const input = inputs[n];
+        if(ths.item(n).style.display !== 'none') {
+            input.style.display = 'block';
+            input.style.marginBottom = '1rem';
+            input.style.marginTop = '1rem';
+        }
+        else {
+            input.style.display = 'none';
+            input.style.marginBottom = '0px';
+            input.style.marginTop = '0px';
+        }
+    }
+  });
+
   table.dataset.files = data.files;
   table.addEventListener('mouseover',toolTipMouseover);
 
