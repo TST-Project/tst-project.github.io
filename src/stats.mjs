@@ -66,7 +66,7 @@ const fontfam = '"Brill", "et-book", "Noto Serif Tamil", "TST Grantha", "Bangla"
 const chartoptions =  {
     scales: {
         x: { stacked: true, ticks: {font: {family: fontfam, size: 18}, color: 'rgb(17,17,17)'} },
-        y: { stacked: true, ticks: {font: {family: fontfam, size: 16}} }
+        y: { stacked: true, ticks: {font: {family: fontfam, size: 16}, precision: 0} }
     },
     plugins: {
         legend: {
