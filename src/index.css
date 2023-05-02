@@ -451,6 +451,27 @@ span.invisinote::after {
     position: relative;
 }
 
+#filter_inputs input {
+    display: none;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    padding: 5px;
+    background-color: transparent;
+}
+
+#filter_button {
+    margin-left: 0.5rem;
+    background: rgba(0,0,0,0);
+    font-weight: bold;
+    border: 0;
+}
+
+#filter_button:hover {
+    background: rgba(43,32,28,0.8);
+    color: white;
+    text-shadow: 2px 2px 2px black;
+    border: 1px solid rgba(43,32,28,0.8);
+}
 
 @media (max-width: 1200px) {
     .dataTable-container {

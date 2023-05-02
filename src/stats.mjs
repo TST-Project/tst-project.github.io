@@ -92,13 +92,13 @@ const chartoptions =  {
     }
 };
 
-const drawStats = (dt) => {
+const drawStats = (dt,searchparams) => {
     const statbox = document.getElementById('stats');
     statbox.innerHTML = '';
-    statbox.dataset.search = dt.search();
-    if(statbox.dataset.search) {
+    if(searchparams && searchparams.join('').trim() !== '') {
         chartoptions.plugins.title.display = true;
-        chartoptions.plugins.title.text = `Filter: ${statbox.dataset.search}` ;
+        const joined = searchparams.filter(s => s.trim() !== '').join(', ');
+        chartoptions.plugins.title.text = `Filter: ${joined}` ;
     }
     else
         chartoptions.plugins.title.display =  false ;
@@ -130,22 +130,48 @@ const StatsListen = (dt) => {
         if(e.target.id === 'listview' && !e.target.classList.contains('selected')) {
             e.target.classList.add('selected');
             document.getElementById('statsview').classList.remove('selected');
-            document.getElementById('index_wrapper').style.display = 'block';
             document.getElementById('stats').style.display = 'none';
+
+            //document.getElementById('index_wrapper').style.display = 'block';
+            document.getElementById('index_wrapper').style.paddingTop = '1rem';
+            document.getElementById('index_wrapper').style.paddingBottom = '1rem';
+            document.querySelector('.dataTables_scroll').style.overflow = 'revert';
+            document.querySelector('.dataTables_scrollHead').style.height = 'revert';
+            document.querySelector('.dataTables_scrollBody').style.height = 'revert';
+            document.getElementById('index_length').style.display = 'block';
+            document.getElementById('index_filter').style.display = 'block';
+            document.getElementById('index_info').style.display = 'block';
+            document.getElementById('index_paginate').style.display = 'block';
+
             return;
         }
 
         if(e.target.id === 'statsview' && !e.target.classList.contains('selected')) {
             e.target.classList.add('selected');
             const listview = document.getElementById('listview').classList.remove('selected');
-            document.getElementById('index_wrapper').style.display = 'none';
+            //document.getElementById('index_wrapper').style.display = 'none';
+            document.getElementById('index_wrapper').style.paddingTop = '0rem';
+            document.getElementById('index_wrapper').style.paddingBottom = '0rem';
+            document.querySelector('.dataTables_scroll').style.overflow = 'hidden';
+            document.querySelector('.dataTables_scrollHead').style.height = '0px';
+            document.querySelector('.dataTables_scrollBody').style.height = '0px';
+            document.getElementById('index_length').style.display = 'none';
+            document.getElementById('index_filter').style.display = 'none';
+            document.getElementById('index_info').style.display = 'none';
+            document.getElementById('index_paginate').style.display = 'none';
+
             const statsbox = document.getElementById('stats');
             statsbox.style.display = 'block';
             if(!statsbox.querySelector('canvas'))
                 drawStats(dt);
-            else if(statsbox.dataset.hasOwnProperty('search') && 
-                   statsbox.dataset.search !== dt.search() )
-                drawStats(dt);
+            else {
+                const searchparams = [dt.search(),...dt.columns().search().toArray()];
+                const stringy = JSON.stringify(searchparams);
+                if(statsbox.dataset.search !== stringy ) {
+                    statsbox.dataset.search = stringy;
+                    drawStats(dt,searchparams);
+                }
+            }
         }
 });
 };

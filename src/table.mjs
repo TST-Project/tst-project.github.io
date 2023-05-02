@@ -122,6 +122,16 @@ const processResult = (result,columnfields) => {
     const files = result.map(res => `"${res.filename}"`).join(', ');
     return {rows: rows, columns: columns, files: files};
 };
+
+const filterColumn = (dt,e) => {
+    const colname = e.target.dataset.name;
+    if(!colname) return;
+
+    const column = dt.column(`${colname}:name`);
+    if(column.search() !== e.target.value)
+        column.search(e.target.value).draw();
+};
+
 const makeTable = (data, table) => {
 
     const dataTable = new DataTable(`#${table.id}`, {
@@ -143,6 +153,44 @@ const makeTable = (data, table) => {
           //fixedHeader: true
 
   });
+  const filterrow = document.createElement('tr');
+  filterrow.id = 'filter_inputs';
+  for(const column of data.columns) {
+    const th = document.createElement('th');
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.dataset.name = column.name;
+    input.placeholder = `Filter ${column.title}`;
+    input.style.width = '100%';
+    th.appendChild(input);
+    filterrow.appendChild(th);
+  }
+  filterrow.style.height = '0px';
+  document.querySelector('.dataTables_scrollHead thead').prepend(filterrow);
+  filterrow.addEventListener('keyup', filterColumn.bind(null,dataTable));
+  filterrow.addEventListener('change', filterColumn.bind(null,dataTable));
+  filterrow.addEventListener('clear', filterColumn.bind(null,dataTable));
+    
+  const filterbutton = document.createElement('button');
+  filterbutton.id = 'filter_button';
+  filterbutton.append('↓');
+  document.getElementById('index_filter').appendChild(filterbutton);
+  filterbutton.addEventListener('click', (e) => {
+    const toshow = document.getElementById('filter_inputs');
+    if(toshow.style.height === '0px') {
+        toshow.style.height = 'auto';
+        for(const input of toshow.querySelectorAll('input'))
+            input.style.display = 'block';
+        e.target.textContent = '↑';
+    }
+    else {
+        toshow.style.height = '0px';
+        for(const input of toshow.querySelectorAll('input'))
+            input.style.display = 'none';
+        e.target.textContent = '↓';
+    }
+  });
+
   document.getElementById('spinner').style.display = 'none';
   const tabs = document.getElementById('tabright');
   if(tabs) tabs.style.visibility = 'visible';
