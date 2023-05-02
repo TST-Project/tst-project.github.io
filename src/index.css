@@ -451,6 +451,9 @@ span.invisinote::after {
     position: relative;
 }
 
+#filter_inputs th {
+    padding-top: 0;
+}
 #filter_inputs input {
     display: none;
     border: 1px solid #aaa;
