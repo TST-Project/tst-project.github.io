@@ -162,15 +162,11 @@ const StatsListen = (dt) => {
 
             const statsbox = document.getElementById('stats');
             statsbox.style.display = 'block';
-            if(!statsbox.querySelector('canvas'))
-                drawStats(dt);
-            else {
-                const searchparams = [dt.search(),...dt.columns().search().toArray()];
-                const stringy = JSON.stringify(searchparams);
-                if(statsbox.dataset.search !== stringy ) {
-                    statsbox.dataset.search = stringy;
-                    drawStats(dt,searchparams);
-                }
+            const searchparams = [dt.search(),...dt.columns().search().toArray()];
+            const stringy = JSON.stringify(searchparams);
+            if(!statsbox.querySelector('canvas') || statsbox.dataset.search !== stringy) {
+                drawStats(dt,searchparams);
+                statsbox.dataset.search = stringy;
             }
         }
 });
