@@ -173,6 +173,7 @@ const makeTable = (data, table) => {
     
   const filterbutton = document.createElement('button');
   filterbutton.id = 'filter_button';
+  filterbutton.title = 'More filters';
   filterbutton.append('↓');
   document.getElementById('index_filter').appendChild(filterbutton);
   filterbutton.addEventListener('click', (e) => {
@@ -182,12 +183,14 @@ const makeTable = (data, table) => {
         for(const input of toshow.querySelectorAll('input'))
             input.style.display = 'block';
         e.target.textContent = '↑';
+        e.target.title = 'Less filters';
     }
     else {
         toshow.style.height = '0px';
         for(const input of toshow.querySelectorAll('input'))
             input.style.display = 'none';
         e.target.textContent = '↓';
+        e.target.title = 'More filters';
     }
   });
 
