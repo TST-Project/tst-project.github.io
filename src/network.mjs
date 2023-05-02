@@ -265,6 +265,17 @@ document.getElementById('tabright').addEventListener('click',(e) => {
         e.target.classList.add('selected');
         document.getElementById('networkview').classList.remove('selected');
         document.getElementById('index_wrapper').style.display = 'block';
+        /*
+        document.getElementById('index_wrapper').style.paddingTop = '1rem';
+        document.getElementById('index_wrapper').style.paddingBottom = '1rem';
+        document.querySelector('.dataTables_scroll').style.overflow = 'revert';
+        document.querySelector('.dataTables_scrollHead').style.height = 'revert';
+        document.querySelector('.dataTables_scrollBody').style.height = 'revert';
+        document.getElementById('index_length').style.display = 'block';
+        document.getElementById('index_filter').style.display = 'block';
+        document.getElementById('index_info').style.display = 'block';
+        document.getElementById('index_paginate').style.display = 'block';
+        */
         document.getElementById('network').style.display = 'none';
         document.getElementById('networklegend').style.display = 'none';
         return;
@@ -274,11 +285,24 @@ document.getElementById('tabright').addEventListener('click',(e) => {
         e.target.classList.add('selected');
         const listview = document.getElementById('listview').classList.remove('selected');
         document.getElementById('index_wrapper').style.display = 'none';
+        /*
+        document.getElementById('index_wrapper').style.paddingTop = '0rem';
+        document.getElementById('index_wrapper').style.paddingBottom = '0rem';
+        document.querySelector('.dataTables_scroll').style.overflow = 'hidden';
+        document.querySelector('.dataTables_scrollHead').style.height = '0px';
+        document.querySelector('.dataTables_scrollBody').style.height = '0px';
+        document.getElementById('index_length').style.display = 'none';
+        document.getElementById('index_filter').style.display = 'none';
+        document.getElementById('index_info').style.display = 'none';
+        document.getElementById('index_paginate').style.display = 'none';
+        */
+
         document.getElementById('network').style.display = 'block';
+
         const legend = document.getElementById('networklegend');
         if(legend) legend.style.display = 'flex';
         if(!document.getElementById('network').classList.contains('__________cytoscape_container'))
-            drawNetwork();
+        drawNetwork();
 
     }
 });

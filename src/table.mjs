@@ -1,6 +1,6 @@
-import DataTable from 'datatables.net';
-//import 'datatables.net-responsive';
-//import 'datatables.net-fixedheader';
+import DataTable from 'datatables.net-dt';
+import 'datatables.net-responsive-dt';
+//import 'datatables.net-fixedheader-dt';
 import './lib/customsort.mjs';
 import createSqlWorker from './lib/sqlWorker.mjs';
 import {toolTipMouseover} from './lib/toolTip.mjs';
@@ -148,8 +148,12 @@ const makeTable = (data, table) => {
           sortable: true,
           data: data.rows,
           columns: data.columns,
-          //responsive: true,
-          scrollX: true
+          responsive: {
+              details: {
+                  type: 'inline'
+              }
+          },
+          //scrollX: true
           //fixedHeader: true
 
   });
@@ -166,7 +170,7 @@ const makeTable = (data, table) => {
     filterrow.appendChild(th);
   }
   filterrow.style.height = '0px';
-  document.querySelector('.dataTables_scrollHead thead').prepend(filterrow);
+  document.querySelector('thead').prepend(filterrow);
   filterrow.addEventListener('keyup', filterColumn.bind(null,dataTable));
   filterrow.addEventListener('change', filterColumn.bind(null,dataTable));
   filterrow.addEventListener('clear', filterColumn.bind(null,dataTable));
@@ -180,15 +184,21 @@ const makeTable = (data, table) => {
     const toshow = document.getElementById('filter_inputs');
     if(toshow.style.height === '0px') {
         toshow.style.height = 'auto';
-        for(const input of toshow.querySelectorAll('input'))
+        for(const input of toshow.querySelectorAll('input')) {
             input.style.display = 'block';
+            input.style.marginBottom = '1rem';
+            input.style.marginTop = '1rem';
+        }
         e.target.textContent = '↑';
         e.target.title = 'Less filters';
     }
     else {
         toshow.style.height = '0px';
-        for(const input of toshow.querySelectorAll('input'))
+        for(const input of toshow.querySelectorAll('input')) {
             input.style.display = 'none';
+            input.style.marginBottom = '0px';
+            input.style.marginTop = '0px';
+        }
         e.target.textContent = '↓';
         e.target.title = 'More filters';
     }

@@ -203,12 +203,14 @@ table, #index {
     margin: 0 auto;
     /*width: 85%;*/
 }
+
 thead {
     top: 0;
     position: sticky;
     z-index: 1;
     hyphens: none;
 }
+
 /*
 thead th {
     max-width: 30ch !important;
@@ -453,6 +455,8 @@ span.invisinote::after {
 
 #filter_inputs th {
     padding-top: 0;
+    padding-bottom: 0;
+    background: rgb(255,255,248);
 }
 #filter_inputs input {
     display: none;

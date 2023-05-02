@@ -132,7 +132,8 @@ const StatsListen = (dt) => {
             document.getElementById('statsview').classList.remove('selected');
             document.getElementById('stats').style.display = 'none';
 
-            //document.getElementById('index_wrapper').style.display = 'block';
+            document.getElementById('index_wrapper').style.display = 'block';
+            /*
             document.getElementById('index_wrapper').style.paddingTop = '1rem';
             document.getElementById('index_wrapper').style.paddingBottom = '1rem';
             document.querySelector('.dataTables_scroll').style.overflow = 'revert';
@@ -142,14 +143,15 @@ const StatsListen = (dt) => {
             document.getElementById('index_filter').style.display = 'block';
             document.getElementById('index_info').style.display = 'block';
             document.getElementById('index_paginate').style.display = 'block';
-
+            */
             return;
         }
 
         if(e.target.id === 'statsview' && !e.target.classList.contains('selected')) {
             e.target.classList.add('selected');
             const listview = document.getElementById('listview').classList.remove('selected');
-            //document.getElementById('index_wrapper').style.display = 'none';
+            document.getElementById('index_wrapper').style.display = 'none';
+            /*
             document.getElementById('index_wrapper').style.paddingTop = '0rem';
             document.getElementById('index_wrapper').style.paddingBottom = '0rem';
             document.querySelector('.dataTables_scroll').style.overflow = 'hidden';
@@ -159,7 +161,7 @@ const StatsListen = (dt) => {
             document.getElementById('index_filter').style.display = 'none';
             document.getElementById('index_info').style.display = 'none';
             document.getElementById('index_paginate').style.display = 'none';
-
+            */
             const statsbox = document.getElementById('stats');
             statsbox.style.display = 'block';
             const searchparams = [dt.search(),...dt.columns().search().toArray()];
