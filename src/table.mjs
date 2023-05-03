@@ -184,12 +184,12 @@ const makeTable = (data, table) => {
     const toshow = document.getElementById('filter_inputs');
     if(toshow.style.height === '0px') {
         toshow.style.height = 'auto';
-        const inputs = [...toshow.querySelectorAll('input')];
+        const inputs = [...toshow.querySelectorAll('th')];
         const ths = toshow.nextElementSibling.querySelectorAll('th');
         for(let n=0;n<inputs.length;n++) {
             if(ths.item(n).style.display !== 'none') {
                 const input = inputs[n];
-                input.style.display = 'block';
+                input.style.display = 'table-cell';
                 input.style.marginBottom = '1rem';
                 input.style.marginTop = '1rem';
             }
@@ -199,7 +199,7 @@ const makeTable = (data, table) => {
     }
     else {
         toshow.style.height = '0px';
-        for(const input of toshow.querySelectorAll('input')) {
+        for(const input of toshow.querySelectorAll('th')) {
             input.style.display = 'none';
             input.style.marginBottom = '0px';
             input.style.marginTop = '0px';
@@ -220,12 +220,12 @@ const makeTable = (data, table) => {
     const toshow = document.getElementById('filter_inputs');
     if(toshow.style.height === '0px') return;
 
-    const inputs = [...toshow.querySelectorAll('input')];
+    const inputs = [...toshow.querySelectorAll('th')];
     const ths = toshow.nextElementSibling.querySelectorAll('th');
     for(let n=0;n<inputs.length;n++) {
         const input = inputs[n];
         if(ths.item(n).style.display !== 'none') {
-            input.style.display = 'block';
+            input.style.display = 'table-cell';
             input.style.marginBottom = '1rem';
             input.style.marginTop = '1rem';
         }

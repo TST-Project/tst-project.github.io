@@ -454,12 +454,10 @@ span.invisinote::after {
 }
 
 #filter_inputs th {
-    padding-top: 0;
-    padding-bottom: 0;
+    display: none;
     background: rgb(255,255,248);
 }
 #filter_inputs input {
-    display: none;
     border: 1px solid #aaa;
     border-radius: 3px;
     padding: 5px;
