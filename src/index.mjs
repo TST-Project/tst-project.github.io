@@ -8,6 +8,12 @@ window.addEventListener('load', async () => {
     
     const dt = makeTable(await getData(table), table);
 
+    const network = document.getElementById('network');
+    if(network) {
+        const { NetworkListen } = await import('./network.mjs');
+        NetworkListen(dt);
+    }
+
     const stats = document.getElementById('stats');
     if(stats) {
         const { StatsListen } = await import('./stats.mjs');

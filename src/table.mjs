@@ -119,8 +119,8 @@ const processResult = (result,columnfields) => {
           return ret;
     });
 
-    const files = result.map(res => `"${res.filename}"`).join(', ');
-    return {rows: rows, columns: columns, files: files};
+    //const files = result.map(res => `"${res.filename}"`).join(', ');
+    return {rows: rows, columns: columns/*, files: files*/};
 };
 
 const filterColumn = (dt,e) => {
@@ -137,7 +137,7 @@ const makeTable = (data, table) => {
     const dataTable = new DataTable(`#${table.id}`, {
           searchable: true,
           'language': {
-              'search': 'Filter:'
+              'search': 'Filter: '
           },
           paging: true,
           pageLength: 100,
@@ -178,7 +178,7 @@ const makeTable = (data, table) => {
   const filterbutton = document.createElement('button');
   filterbutton.id = 'filter_button';
   filterbutton.title = 'More filters';
-  filterbutton.append('↓');
+  filterbutton.append('+');
   document.getElementById('index_filter').appendChild(filterbutton);
   filterbutton.addEventListener('click', (e) => {
     const toshow = document.getElementById('filter_inputs');
@@ -194,7 +194,7 @@ const makeTable = (data, table) => {
                 input.style.marginTop = '1rem';
             }
         }
-        e.target.textContent = '↑';
+        e.target.textContent = '–';
         e.target.title = 'Less filters';
     }
     else {
@@ -204,7 +204,7 @@ const makeTable = (data, table) => {
             input.style.marginBottom = '0px';
             input.style.marginTop = '0px';
         }
-        e.target.textContent = '↓';
+        e.target.textContent = '+';
         e.target.title = 'More filters';
     }
   });
@@ -237,7 +237,7 @@ const makeTable = (data, table) => {
     }
   });
 
-  table.dataset.files = data.files;
+  //table.dataset.files = data.files;
   table.addEventListener('mouseover',toolTipMouseover);
 
   return dataTable;

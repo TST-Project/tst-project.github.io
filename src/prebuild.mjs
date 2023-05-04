@@ -23,10 +23,16 @@ const readHtml = (str) => makeHtml(fs.readFileSync(str,{encoding: 'utf-8'}));
 const template = readHtml('template.html');
 const templateMenu = template.getElementById('menu');
 const templateFooter = template.querySelector('article > footer');
+const templateSheets = template.querySelectorAll('link[rel="stylesheet"]');
 
 const files = getIndices('./');
 for(const file of files) {
     const html = readHtml(file);
+
+    const ssheets = html.querySelectorAll('link[rel="stylesheet"]');
+    for(const ssheet of ssheets) ssheet.remove();
+    const head = html.querySelector('head');
+    for(const ssheet of templateSheets) head.appendChild(ssheet.cloneNode(true));
 
     const menu = html.getElementById('menu');
     if(menu)

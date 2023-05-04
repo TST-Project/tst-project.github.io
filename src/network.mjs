@@ -3,6 +3,10 @@ import Cytoscape from 'cytoscape';
 import d3Force from 'cytoscape-d3-force';
 Cytoscape.use(d3Force);
 
+const _state = {
+    cy: null,
+};
+
 const roles = ['annotator','author','collector','commissioner','editor','owner','scribe'];
 const colours = ['#a6cee3','#e41a1c','#7570b3','#e7298a','#e6ab02','#a6761d','#66a61e'];
 //const colours = ['#e41a1c','#377eb8','#4daf4a','#984ea3','#ff7f00','#ffff33','#a65628'];
@@ -87,7 +91,7 @@ const networkstyle = [
     }
     */
 ];
-
+/*
 const queryFromPersname = async (persname) => {
     const worker = await createSqlWorker('/mss/db/meta.db');
     const query = 
@@ -102,11 +106,14 @@ const queryFromPersname = async (persname) => {
         'WHERE path = persons.filename AND path = mss.filename AND persons.role != ""';
     return await worker.db.query(query);
 };
+*/
+const queryFromTable = async (dt) => {
 
-const queryFromTable = async () => {
-
-    const filenames = document.getElementById('index').dataset.files;
-
+    const filenames = dt.column(`shelfmark:name`,{search: 'applied'}).nodes()
+                        .map(n => `"${n.querySelector('a').href.split('/').pop()}"`)
+                        .toArray().join(', ');
+    
+    //const filenames = document.getElementById('index').dataset.files;
     const worker = await createSqlWorker('/mss/db/meta.db');
     const query = 
         'SELECT path, mss.shelfmark as shelfmark, mss.width as width, mss.height as height, persons.persname as persname, persons.role as role FROM '+
@@ -121,11 +128,14 @@ const queryFromTable = async () => {
     return await worker.db.query(query);
 };
 
-const getNetwork = async (persname) => {
+//const getNetwork = async (persname) => {
+const getNetwork = async (dt) => {
+    /*
     const result = persname ?
         await queryFromPersname(persname) :
         await queryFromTable();
-    
+    */
+    const result = await queryFromTable(dt);
     const nodes = new Map();
 
     const parsesize = (str) => {
@@ -175,15 +185,23 @@ const getNetwork = async (persname) => {
     return edges.concat([...nodes.values()]);
 };
 
-const drawNetwork = async () => {
+const destroyNetwork = () => {
+    _state.cy?.destroy();
+    const legend = document.getElementById('networklegend');
+    if(legend) legend.remove();
+};
+
+const drawNetwork = async (dt,searchparams) => {
     const container = document.getElementById('network');
-    const persname = container.dataset.person;
+    //const persname = container.dataset.person;
     const spinner = document.getElementById('spinner');
     spinner.style.display = 'flex';
+    
+    destroyNetwork();
 
     const cy = Cytoscape({
        container: container,
-       elements: await getNetwork(persname),
+       elements: await getNetwork(dt),
        layout: {
            name: 'd3-force',
            linkId: function id(d) {return d.id;},
@@ -203,7 +221,7 @@ const drawNetwork = async () => {
        style: networkstyle
     });
     
-    container.before(makeLegend());
+    container.before(makeLegend(searchparams));
 
     const mouseUp  = (cy,e) => {
         cy.$('.clicked').removeClass('clicked');
@@ -212,9 +230,10 @@ const drawNetwork = async () => {
     };
 
     cy.on('tapend',mouseUp.bind(null,cy));
+    _state.cy = cy;
 };
 
-const makeLegend = () => {
+const makeLegend = (searchparams) => {
     const legend = document.createElement('div');
     legend.id = 'networklegend';
     
@@ -254,55 +273,72 @@ const makeLegend = () => {
         div.appendChild(title);
         legend.appendChild(div);
     }
+    if(searchparams && searchparams.join('').trim() !== '') {
+        const joined = searchparams.filter(s => s.trim() !== '').join(', ');
+        const div = document.createElement('div');
+        div.append(`filter: ${joined}`);
+        legend.appendChild(div);
+    }
     return legend;
 };
 
-document.getElementById('tabright').addEventListener('click',(e) => {
+const NetworkListen = (dt) => {
+    document.getElementById('tabright').addEventListener('click',(e) => {
 
-    if(document.getElementById('spinner').style.display !== 'none') return;
+        if(document.getElementById('spinner').style.display !== 'none') return;
 
-    if(e.target.id === 'listview' && !e.target.classList.contains('selected')) {
-        e.target.classList.add('selected');
-        document.getElementById('networkview').classList.remove('selected');
-        document.getElementById('index_wrapper').style.display = 'block';
-        /*
-        document.getElementById('index_wrapper').style.paddingTop = '1rem';
-        document.getElementById('index_wrapper').style.paddingBottom = '1rem';
-        document.querySelector('.dataTables_scroll').style.overflow = 'revert';
-        document.querySelector('.dataTables_scrollHead').style.height = 'revert';
-        document.querySelector('.dataTables_scrollBody').style.height = 'revert';
-        document.getElementById('index_length').style.display = 'block';
-        document.getElementById('index_filter').style.display = 'block';
-        document.getElementById('index_info').style.display = 'block';
-        document.getElementById('index_paginate').style.display = 'block';
-        */
-        document.getElementById('network').style.display = 'none';
-        document.getElementById('networklegend').style.display = 'none';
-        return;
-    }
+        if(e.target.id === 'listview' && !e.target.classList.contains('selected')) {
+            e.target.classList.add('selected');
+            document.getElementById('networkview').classList.remove('selected');
+            document.getElementById('index_wrapper').style.display = 'block';
+            /*
+            document.getElementById('index_wrapper').style.paddingTop = '1rem';
+            document.getElementById('index_wrapper').style.paddingBottom = '1rem';
+            document.querySelector('.dataTables_scroll').style.overflow = 'revert';
+            document.querySelector('.dataTables_scrollHead').style.height = 'revert';
+            document.querySelector('.dataTables_scrollBody').style.height = 'revert';
+            document.getElementById('index_length').style.display = 'block';
+            document.getElementById('index_filter').style.display = 'block';
+            document.getElementById('index_info').style.display = 'block';
+            document.getElementById('index_paginate').style.display = 'block';
+            */
+            document.getElementById('network').style.display = 'none';
+            document.getElementById('networklegend').style.display = 'none';
+            return;
+        }
 
-    if(e.target.id === 'networkview' && !e.target.classList.contains('selected')) {
-        e.target.classList.add('selected');
-        const listview = document.getElementById('listview').classList.remove('selected');
-        document.getElementById('index_wrapper').style.display = 'none';
-        /*
-        document.getElementById('index_wrapper').style.paddingTop = '0rem';
-        document.getElementById('index_wrapper').style.paddingBottom = '0rem';
-        document.querySelector('.dataTables_scroll').style.overflow = 'hidden';
-        document.querySelector('.dataTables_scrollHead').style.height = '0px';
-        document.querySelector('.dataTables_scrollBody').style.height = '0px';
-        document.getElementById('index_length').style.display = 'none';
-        document.getElementById('index_filter').style.display = 'none';
-        document.getElementById('index_info').style.display = 'none';
-        document.getElementById('index_paginate').style.display = 'none';
-        */
+        if(e.target.id === 'networkview' && !e.target.classList.contains('selected')) {
+            e.target.classList.add('selected');
+            const listview = document.getElementById('listview').classList.remove('selected');
+            document.getElementById('index_wrapper').style.display = 'none';
+            /*
+            document.getElementById('index_wrapper').style.paddingTop = '0rem';
+            document.getElementById('index_wrapper').style.paddingBottom = '0rem';
+            document.querySelector('.dataTables_scroll').style.overflow = 'hidden';
+            document.querySelector('.dataTables_scrollHead').style.height = '0px';
+            document.querySelector('.dataTables_scrollBody').style.height = '0px';
+            document.getElementById('index_length').style.display = 'none';
+            document.getElementById('index_filter').style.display = 'none';
+            document.getElementById('index_info').style.display = 'none';
+            document.getElementById('index_paginate').style.display = 'none';
+            */
 
-        document.getElementById('network').style.display = 'block';
+            const networkbox = document.getElementById('network');
+            networkbox.style.display = 'block';
 
-        const legend = document.getElementById('networklegend');
-        if(legend) legend.style.display = 'flex';
-        if(!document.getElementById('network').classList.contains('__________cytoscape_container'))
-        drawNetwork();
+            const legend = document.getElementById('networklegend');
+            if(legend) legend.style.display = 'flex';
 
-    }
-});
+            const searchparams = [dt.search(),...dt.columns().search().toArray()];
+            const stringy = JSON.stringify(searchparams);
+
+            if(!networkbox.classList.contains('__________cytoscape_container') || networkbox.dataset.search !== stringy) {
+                drawNetwork(dt,searchparams);
+                networkbox.dataset.search = stringy;
+            }
+
+        }
+    });
+};
+
+export { NetworkListen };
