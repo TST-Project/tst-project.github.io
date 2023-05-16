@@ -26,10 +26,7 @@ const tamilSort = (a,b,dir='asc') => {
     return dir === 'asc' ? a.length > b.length : a.length < b.length;
 };
 DataTable.ext.type.search.tamil = (a) => {
-    return a ?
-        a.replace(/<.*?>|\u00AD/g, '')
-         .replace(/\s+/, ' ').toLowerCase() :
-        '';
+    return a ? cleanup(a) : '';
 };
 /*
 DataTable.ext.type.order['tamil-pre'] = (a) => {
@@ -42,6 +39,7 @@ DataTable.ext.type.order['tamil-pre'] = (a) => {
 const cleanup = (a) => {
     return a ?
         a.replace(/<.*?>|\u00AD/g, '')
+         .trim()
          .replace(/\s+/, ' ').toLowerCase() :
         '';
 };
