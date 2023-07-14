@@ -5,6 +5,7 @@ Cytoscape.use(d3Force);
 
 const _state = {
     cy: null,
+    searchTimeout: null
 };
 
 const roles = ['annotator','author','collector','commissioner','editor','owner','scribe'];
@@ -60,6 +61,20 @@ const networkstyle = [
      style: {
          'label': 'data(popup)',
          'line-opacity': '1'
+     }
+    },
+    {selector: '.found',
+    style: {
+        'underlay-color': 'rgb(255,255,12)',
+        'underlay-padding': 4,
+        'underlay-opacity': 0.8,
+        'line-color': 'rgb(255,255,12)',
+        'z-index': 15
+        }
+    },
+    {selector: '.manuscript.found',
+     style: {
+         'label': 'data(popup)',
      }
     },
     /*
@@ -221,7 +236,7 @@ const drawNetwork = async (dt,searchparams) => {
        style: networkstyle
     });
     
-    container.before(makeLegend(searchparams));
+    container.before(makeLegend(searchparams,cy));
 
     const mouseUp  = (cy,e) => {
         cy.$('.clicked').removeClass('clicked');
@@ -231,9 +246,10 @@ const drawNetwork = async (dt,searchparams) => {
 
     cy.on('tapend',mouseUp.bind(null,cy));
     _state.cy = cy;
+
 };
 
-const makeLegend = (searchparams) => {
+const makeLegend = (searchparams,cy) => {
     const legend = document.createElement('div');
     legend.id = 'networklegend';
     
@@ -279,6 +295,18 @@ const makeLegend = (searchparams) => {
         div.append(`filter: ${joined}`);
         legend.appendChild(div);
     }
+    
+    const searchbox = document.createElement('input');
+    searchbox.autocomplete = 'off';
+    searchbox.placeholder = 'Search...';
+    searchbox.style.marginLeft = 'auto';
+    searchbox.style.marginRight = '1em';
+    legend.firstChild.style.marginLeft = 'auto';
+    searchbox.addEventListener('change',searchSigla.bind(null,cy));
+    searchbox.addEventListener('keyup',searchSigla.bind(null,cy));
+
+    legend.appendChild(searchbox);
+
     return legend;
 };
 
@@ -339,6 +367,35 @@ const NetworkListen = (dt) => {
 
         }
     });
+};
+
+const clearFound = (cy) => {
+    const oldfound = cy.nodes('.found');
+    if(oldfound) oldfound.removeClass('found');
+    if(_state.searchTimeout) _state.searchTimeout = null;
+};
+
+const searchSigla = (cy,e) => {
+    const go = (cy, targ) => {
+        clearFound(cy);
+        const val = targ.value;
+        if(val) {
+            const oldfound = cy.nodes('.found');
+            if(oldfound) oldfound.removeClass('found');
+            const found = cy.nodes(`[label *= '${val}'],[popup *= '${val}']`);
+            found.addClass('found');
+            return found ? found[0] : null;
+        }
+        else return false;
+    };
+    
+    if(e.key === 'Enter') {
+        const found = go(cy,e.target);
+        if(found) cy.animate({fit: {eles: found, padding: 10}, duration: 1000});
+    }
+    else
+        if(!_state.searchTimeout)
+            _state.searchTimeout = setTimeout(go,300,cy,e.target);
 };
 
 export { NetworkListen };
