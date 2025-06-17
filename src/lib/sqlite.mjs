@@ -18,7 +18,7 @@ const openDb = async dburl => {
 
 const openDb = async dburl => {
     const sqlPromise = initSqlJs({
-        locateFile: file => `/lib/${file}`
+        locateFile: file => `/${file}`
     });
     const dataPromise = fetch(dburl).then(r => r.arrayBuffer());
     const [SQL, buf] = await Promise.all([sqlPromise, dataPromise]);
