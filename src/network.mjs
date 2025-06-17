@@ -1,4 +1,5 @@
-import createSqlWorker from './lib/sqlWorker.mjs';
+//import createSqlWorker from './lib/sqlWorker.mjs';
+import openDb from './lib/sqlite.mjs';
 import Cytoscape from 'cytoscape';
 import d3Force from 'cytoscape-d3-force';
 Cytoscape.use(d3Force);
@@ -129,7 +130,9 @@ const queryFromTable = async (dt) => {
                         .toArray().join(', ');
     
     //const filenames = document.getElementById('index').dataset.files;
-    const worker = await createSqlWorker('/mss/db/meta.db');
+    //const worker = await createSqlWorker('/mss/db/meta.db');
+    const worker = await openDb('/mss/db/meta.db');
+
     const query = 
         'SELECT path, mss.shelfmark as shelfmark, mss.width as width, mss.height as height, persons.persname as persname, persons.role as role FROM '+
         '('+
@@ -140,7 +143,7 @@ const queryFromTable = async (dt) => {
         'INNER JOIN persons '+
         'INNER JOIN mss '+
         'WHERE path = persons.filename AND path = mss.filename AND persons.role != ""';
-    return await worker.db.query(query);
+    return (await worker.exec(query))[0];
 };
 
 //const getNetwork = async (persname) => {
@@ -151,6 +154,8 @@ const getNetwork = async (dt) => {
         await queryFromTable();
     */
     const result = await queryFromTable(dt);
+    const colnames = new Map(result.columns.map((e,i) => [e,i]));
+
     const nodes = new Map();
 
     const parsesize = (str) => {
@@ -165,34 +170,40 @@ const getNetwork = async (dt) => {
 
     
     const edges = [];
-    for(const res of result) {
-        if(!nodes.has(res.persname)) {
-            nodes.set(res.persname, {
+    for(const res of result.values) {
+        const persname = res[colnames.get('persname')];
+        const shelfmark = res[colnames.get('shelfmark')];
+        const role = res[colnames.get('role')];
+        const path = res[colnames.get('path')];
+        const width = res[colnames.get('width')];
+        const height = res[colnames.get('height')];
+        if(!nodes.has(persname)) {
+            nodes.set(persname, {
                 data: {
-                    id: res.persname,
-                    label: res.persname
+                    id: persname,
+                    label: persname
                 },
                 classes: 'person'
             });
         }
-        if(!nodes.has(res.shelfmark)) {
+        if(!nodes.has(shelfmark)) {
             const data = {
                 data: {
-                    id: res.path,
-                    width: parsesize(res.width),
-                    height: parsesize(res.height),
-                    popup: res.shelfmark
+                    id: path,
+                    width: parsesize(width),
+                    height: parsesize(height),
+                    popup: shelfmark
                 },
                 classes: 'manuscript'
             };
-            nodes.set(res.shelfmark, data);
+            nodes.set(shelfmark, data);
         }
         edges.push({
             data: {
-                id: `${res.persname}-${res.role}-${res.path}`,
-                source: res.persname,
-                target: res.path,
-                popup: res.role
+                id: `${persname}-${role}-${path}`,
+                source: persname,
+                target: path,
+                popup: role
             }
         });
     }

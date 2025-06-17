@@ -1,4 +1,5 @@
-import createSqlWorker from './lib/sqlWorker.mjs';
+//import createSqlWorker from './lib/sqlWorker.mjs';
+import openDb from './lib/sqlite.mjs';
 import SqlString from 'sqlstring-sqlite';
 import {vanillaSelectBox} from './lib/vanillaSelectBox.mjs';
 import {makeTable, getData, allcolumns} from './table.mjs';
@@ -8,16 +9,17 @@ const getPersons = async (checked) => {
     const spinner = document.getElementById('personsspinner');
     spinner.style.display = 'flex';
 
-    const worker = await createSqlWorker('/mss/db/meta.db');
-    const results = await worker.db.query("SELECT DISTINCT persname FROM persons WHERE role != ''");
+    //const worker = await createSqlWorker('/mss/db/meta.db');
+    const worker = await openDb('/mss/db/meta.db');
+    const results = (await worker.exec("SELECT DISTINCT persname FROM persons WHERE role != ''"))[0].values;
 
     spinner.style.display = 'none';
     
     const select = document.getElementById('personsselect');
     for(const result of results) {
         const option = document.createElement('option');
-        option.value = SqlString.escape(result.persname);
-        option.append(' ' + result.persname);
+        option.value = SqlString.escape(result);
+        option.append(' ' + result);
         if(checked && checked.includes(option.value)) {
             option.toggleAttribute('selected');
         }

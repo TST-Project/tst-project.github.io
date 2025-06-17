@@ -2,38 +2,39 @@ import DataTable from 'datatables.net-dt';
 import 'datatables.net-responsive-dt';
 //import 'datatables.net-fixedheader-dt';
 import './lib/customsort.mjs';
-import createSqlWorker from './lib/sqlWorker.mjs';
+//import createSqlWorker from './lib/sqlWorker.mjs';
+import openDb from './lib/sqlite.mjs';
 import {toolTipMouseover} from './lib/toolTip.mjs';
 import {hyphenateHTMLString} from './lib/hyphenate.mjs';
 import {vanillaSelectBox} from './lib/vanillaSelectBox.mjs';
 
 const allcolumns = new Map([
     ['shelfmark', {title: 'shelfmark', type: 'shelfmark', sql: 'mss.filename, shelfmark', 
-                  post: (res) => `<a href="/mss/${res.filename}" class="shelfmark">${res.shelfmark}</a>`}],
+                  post: (res,c) => `<a href="/mss/${res[c.get('filename')]}" class="shelfmark">${res[c.get('shelfmark')]}</a>`}],
     ['repository', {sql: 'repository', title: 'repository'}],
-    ['title', {sql: 'title', title: 'title', type: 'tamil', post: (res) => hyphenateHTMLString(res.title)}],
+    ['title', {sql: 'title', title: 'title', type: 'tamil', post: (res,c) => hyphenateHTMLString(res[c.get('title')])}],
     ['languages', {sql: 'languages', title: 'languages'}],
     ['material', {sql: 'material', title: 'material'}],
     ['width', {sql: 'width', title: 'width'}],
     ['height', {sql: 'height', title: 'height'}],
     ['extent', {sql: 'extent', title: 'extent', type: 'extent'}],
     ['date', {sql: 'date', title: 'date', type: 'daterange'}],
-    ['images', {sql: 'images', title: 'images', post: (res) => res.images ? `<span class="smallcaps">${res.images}</span>` : ''}],
+    ['images', {sql: 'images', title: 'images', post: (res,c) => res[c.get('images')] ? `<span class="smallcaps">${res[c.get('images')]}</span>` : ''}],
 
-    ['blessing', {sql: 'paratexts_blessing.text AS blessing', title: 'blessing', table: 'paratexts_blessing', type: 'tamil', post: (res) => hyphenateHTMLString(res.blessing)}],
-    ['colophon', {sql: 'paratexts_colophon.text AS colophon', title: 'colophon', table: 'paratexts_colophon', type: 'tamil', post: (res) => hyphenateHTMLString(res.colophon)}],
-    ['header', {sql: 'paratexts_header.text AS header', title: 'header', table: 'paratexts_header', type: 'tamil', post: (res) => hyphenateHTMLString(res.header)}],
-    ['invocation', {sql: 'paratexts_invocation.text AS invocation', title: 'invocation', table: 'paratexts_invocation', type: 'tamil', post: (res) => hyphenateHTMLString(res.invocation)}],
-    ['ownership-statement', {sql: '[paratexts_ownership-statement].text AS [ownership-statement]', title: 'ownership statement', table: '[paratexts_ownership-statement]', type: 'tamil', post: (res) => hyphenateHTMLString(res['ownership-statement'])}],
-    ['satellite-stanza', {sql: '[paratexts_satellite-stanza].text AS [satellite-stanza]', title: 'satellite stanza', table: '[paratexts_satellite-stanza]', type: 'tamil', post: (res) => hyphenateHTMLString(res['satellite-stanza'])}],
-    ['table-of-contents', {sql: '[paratexts_table-of-contents].text AS [table-of-contents]', title: 'table of contents', table: '[paratexts_table-of-contents]', type: 'tamil', post: (res) => hyphenateHTMLString(res['table-of-contents'])}],
-    ['paratext_title', {sql: 'paratexts_title.text AS paratext_title', title: 'title', table: '[paratexts_title]', type: 'tamil', post: (res) => hyphenateHTMLString(res.paratext_title)}],
-    ['tbc', {sql: 'paratexts_TBC.text AS [tbc]', title: 'TBC', table: '[paratexts_TBC]', type: 'tamil', post: (res) => hyphenateHTMLString(res.tbc)}],
+    ['blessing', {sql: 'paratexts_blessing.text AS blessing', title: 'blessing', table: 'paratexts_blessing', type: 'tamil', post: (res,c) => hyphenateHTMLString(res[c.get('blessing')])}],
+    ['colophon', {sql: 'paratexts_colophon.text AS colophon', title: 'colophon', table: 'paratexts_colophon', type: 'tamil', post: (res,c) => hyphenateHTMLString(res[c.get('colophon')])}],
+    ['header', {sql: 'paratexts_header.text AS header', title: 'header', table: 'paratexts_header', type: 'tamil', post: (res,c) => hyphenateHTMLString(res[c.get('header')])}],
+    ['invocation', {sql: 'paratexts_invocation.text AS invocation', title: 'invocation', table: 'paratexts_invocation', type: 'tamil', post: (res,c) => hyphenateHTMLString(res[c.get('invocation')])}],
+    ['ownership-statement', {sql: '[paratexts_ownership-statement].text AS [ownership-statement]', title: 'ownership statement', table: '[paratexts_ownership-statement]', type: 'tamil', post: (res,c) => hyphenateHTMLString(res['ownership-statement'])}],
+    ['satellite-stanza', {sql: '[paratexts_satellite-stanza].text AS [satellite-stanza]', title: 'satellite stanza', table: '[paratexts_satellite-stanza]', type: 'tamil', post: (res,c) => hyphenateHTMLString(res['satellite-stanza'])}],
+    ['table-of-contents', {sql: '[paratexts_table-of-contents].text AS [table-of-contents]', title: 'table of contents', table: '[paratexts_table-of-contents]', type: 'tamil', post: (res,c) => hyphenateHTMLString(res['table-of-contents'])}],
+    ['paratext_title', {sql: 'paratexts_title.text AS paratext_title', title: 'title', table: '[paratexts_title]', type: 'tamil', post: (res,c) => hyphenateHTMLString(res[c.get('paratext_title')])}],
+    ['tbc', {sql: 'paratexts_TBC.text AS [tbc]', title: 'TBC', table: '[paratexts_TBC]', type: 'tamil', post: (res,c) => hyphenateHTMLString(res[c.get('tbc')])}],
     
-    ['g_below-base', {sql: '[g_below-base].context AS [g_below-base], [g_below-base].text as [g_below-base_sort]', title: 'ligature', searchcolumn: '[g_below-base].text', table: '[g_below-base]', type: 'tamil', render: {_: 'display', sort: 'sort'}, post: (res) => {return {display: hyphenateHTMLString(res['g_below-base']), sort: res['g_below-base_sort']};}}],
-    ['g_post-base', {sql: '[g_post-base].context AS [g_post-base], [g_post-base].text as [g_post-base_sort]', title: 'ligature', searchcolumn: '[g_below-base].text', table: '[g_post-base]', type: 'tamil', render: {_: 'display', sort: 'sort'}, post: (res) => {return {display: hyphenateHTMLString(res['g_post-base']), sort: res['g_post-base_sort']};}}],
+    ['g_below-base', {sql: '[g_below-base].context AS [g_below-base], [g_below-base].text as [g_below-base_sort]', title: 'ligature', searchcolumn: '[g_below-base].text', table: '[g_below-base]', type: 'tamil', render: {_: 'display', sort: 'sort'}, post: (res,c) => {return {display: hyphenateHTMLString(res['g_below-base']), sort: res['g_below-base_sort']};}}],
+    ['g_post-base', {sql: '[g_post-base].context AS [g_post-base], [g_post-base].text as [g_post-base_sort]', title: 'ligature', searchcolumn: '[g_below-base].text', table: '[g_post-base]', type: 'tamil', render: {_: 'display', sort: 'sort'}, post: (res,c) => {return {display: hyphenateHTMLString(res['g_post-base']), sort: res['g_post-base_sort']};}}],
     ['synch', {sql: 'synch', title: 'unit'}],
-    ['milestone', {sql: 'milestone, facs', title: 'page/folio', post: (res) => res.milestone && res.facs ? `<a href="/mss/${res.filename}?facs=${res.facs}">${res.milestone}</a>` : res.milestone}],
+    ['milestone', {sql: 'milestone, facs', title: 'page/folio', post: (res,c) => res[c.get('milestone')] && res[c.get('facs')] ? `<a href="/mss/${res[c.get('filename')]}?facs=${res[c.get('facs')]}">${res[c.get('milestone')]}</a>` : res[c.get('milestone')]}],
     ['placement', {sql: 'placement', title: 'placement'}],
 ]);
 
@@ -44,7 +45,8 @@ const allcolumns = new Map([
 
 const getData = async (table) => {
     
-    const worker = await createSqlWorker('/mss/db/meta.db');
+    //const worker = await createSqlWorker('/mss/db/meta.db');
+    const worker = await openDb('/mss/db/meta.db');
     
     const defaultfields = ['shelfmark','repository','title','languages','material','extent','date','images'];
 
@@ -96,17 +98,21 @@ const getData = async (table) => {
     const joinstr = joins.join(' ');
     const conditionstr = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
 
-    const result = await worker.db.query(`SELECT ${distinct} ${columnstr} FROM mss ${joinstr} ${conditionstr} ORDER BY mss.filename`);
+    const result = (await worker.exec(`SELECT ${distinct} ${columnstr} FROM mss ${joinstr} ${conditionstr} ORDER BY mss.filename`))[0];
     return processResult(result,columnfields);
 };
 
 const processResult = (result,columnfields) => {
-    const rows = result.map(obj => {
+    const colnames = new Map(result.columns.map((e,i) => {
+        const ee = [...allcolumns].find(c => c[1].sql === e);
+        return [ee ? ee[0] : e,i];
+        }));
+    const rows = result.values.map(obj => {
         const ret = {};
         for(const field of columnfields) {
             const config = allcolumns.get(field);
-            if(!config) ret[field] = obj[field] || '';
-            else ret[field] = config.post ? (config.post(obj) || '') : obj[field];
+            if(!config) ret[field] = obj[colnames.get(field)] || '';
+            else ret[field] = config.post ? (config.post(obj,colnames) || '') : obj[colnames.get(field)];
         }
         return ret;
     });

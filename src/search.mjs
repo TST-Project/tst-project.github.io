@@ -1,4 +1,5 @@
-import createSqlWorker from './lib/sqlWorker.mjs';
+//import createSqlWorker from './lib/sqlWorker.mjs';
+import openDb from './lib/sqlite.mjs';
 import SqlString from 'sqlstring-sqlite';
 import DataTable from 'datatables.net';
 import {hyphenateHTMLString} from './lib/hyphenate.mjs';
@@ -8,7 +9,8 @@ const ftssearch = async (query) => {
     
     document.getElementById('spinner').style.display = 'flex';
 
-    const worker = await createSqlWorker('/mss/db/fts.db');
+    //const worker = await createSqlWorker('/mss/db/fts.db');
+    const worker = await openDb('/mss/db/fts.db');
 
     const literated = Transliterate(query);
         
@@ -17,7 +19,7 @@ const ftssearch = async (query) => {
                     .replace(/^'/,`'"`)
                     .replace(/'$/,`"'`);
 
-    const result = await worker.db.exec(
+    const result = await worker.exec(
         `SELECT filename, shelfmark, title, snippet(fulltext,3,'<span class="highlit">','</span>','…',200) `+
          `AS snippet FROM fulltext WHERE text MATCH ${clean} ORDER BY rank`
     );

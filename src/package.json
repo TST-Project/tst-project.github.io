@@ -25,7 +25,6 @@
     "datatables.net-responsive-dt": "^2.4.1",
     "hypher": "^0.2.5",
     "jquery": "^3.6.4",
-    "sql.js-httpvfs": "^0.8.12",
     "sqlstring-sqlite": "^0.1.1"
   }
 }
