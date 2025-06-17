@@ -25,9 +25,9 @@ const allcolumns = new Map([
     ['colophon', {sql: 'paratexts_colophon.text AS colophon', title: 'colophon', table: 'paratexts_colophon', type: 'tamil', post: (res,c) => hyphenateHTMLString(res[c.get('colophon')])}],
     ['header', {sql: 'paratexts_header.text AS header', title: 'header', table: 'paratexts_header', type: 'tamil', post: (res,c) => hyphenateHTMLString(res[c.get('header')])}],
     ['invocation', {sql: 'paratexts_invocation.text AS invocation', title: 'invocation', table: 'paratexts_invocation', type: 'tamil', post: (res,c) => hyphenateHTMLString(res[c.get('invocation')])}],
-    ['ownership-statement', {sql: '[paratexts_ownership-statement].text AS [ownership-statement]', title: 'ownership statement', table: '[paratexts_ownership-statement]', type: 'tamil', post: (res,c) => hyphenateHTMLString(res['ownership-statement'])}],
-    ['satellite-stanza', {sql: '[paratexts_satellite-stanza].text AS [satellite-stanza]', title: 'satellite stanza', table: '[paratexts_satellite-stanza]', type: 'tamil', post: (res,c) => hyphenateHTMLString(res['satellite-stanza'])}],
-    ['table-of-contents', {sql: '[paratexts_table-of-contents].text AS [table-of-contents]', title: 'table of contents', table: '[paratexts_table-of-contents]', type: 'tamil', post: (res,c) => hyphenateHTMLString(res['table-of-contents'])}],
+    ['ownership-statement', {sql: '[paratexts_ownership-statement].text AS [ownership-statement]', title: 'ownership statement', table: '[paratexts_ownership-statement]', type: 'tamil', post: (res,c) => hyphenateHTMLString(res[c.get('ownership-statement')])}],
+    ['satellite-stanza', {sql: '[paratexts_satellite-stanza].text AS [satellite-stanza]', title: 'satellite stanza', table: '[paratexts_satellite-stanza]', type: 'tamil', post: (res,c) => hyphenateHTMLString(res[c.get('satellite-stanza')])}],
+    ['table-of-contents', {sql: '[paratexts_table-of-contents].text AS [table-of-contents]', title: 'table of contents', table: '[paratexts_table-of-contents]', type: 'tamil', post: (res,c) => hyphenateHTMLString(res[c.get('table-of-contents')])}],
     ['paratext_title', {sql: 'paratexts_title.text AS paratext_title', title: 'title', table: '[paratexts_title]', type: 'tamil', post: (res,c) => hyphenateHTMLString(res[c.get('paratext_title')])}],
     ['tbc', {sql: 'paratexts_TBC.text AS [tbc]', title: 'TBC', table: '[paratexts_TBC]', type: 'tamil', post: (res,c) => hyphenateHTMLString(res[c.get('tbc')])}],
     
@@ -116,7 +116,6 @@ const processResult = (result,columnfields) => {
         }
         return ret;
     });
-    
     const columns = columnfields.map(field => {
           const config = allcolumns.get(field);
           const ret = {data: field, title: config.title, name: field};
